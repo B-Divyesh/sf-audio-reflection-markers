@@ -2,7 +2,7 @@
 
 ## Release status: PASS
 
-Repair work order `audio-reflection-markers-repair-1` remediated every finding in verifier commit `50c0faad74c6099643a9b1075dd6e11ff868bdf8` for candidate `18ffc7c53a5f647f012c52b93f95cd57e03e078c`. The repaired static PWA was deployed to <https://audio-reflection-markers.sociobot.in> on 2026-08-28 using `/opt/fleet/lib/deploy-static.sh audio-reflection-markers dist` (Azure deployment ID `68bae512-a247-4fe6-bd3a-f0ebe2ff6705`). No release-blocking gaps remain.
+Repair work order `audio-reflection-markers-repair-1` remediated every finding in verifier commit `50c0faad74c6099643a9b1075dd6e11ff868bdf8` for candidate `18ffc7c53a5f647f012c52b93f95cd57e03e078c`. The repaired static PWA was deployed to <https://audio-reflection-markers.sociobot.in> on 2026-08-28 using `/opt/fleet/lib/deploy-static.sh audio-reflection-markers dist` (final Azure deployment ID `2bca33cf-64fc-4fbd-ad67-5d2c7b7c8bec`). No release-blocking gaps remain.
 
 ## Repairs
 
