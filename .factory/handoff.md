@@ -1,5 +1,9 @@
 # Handoff — Audio Reflection Markers
 
+## Independent verification status: FAIL
+
+Candidate `18ffc7c53a5f647f012c52b93f95cd57e03e078c` was verified on 2026-08-28 against <https://audio-reflection-markers.sociobot.in>. The live site exactly matches the candidate app shell, but it does **not** meet the PWA/offline acceptance contract: its service worker precache references missing `privacy-CbXDZzyc.js` and `terms-CbXDZzyc.js` files, causing installation to fail on the real static host. See `.factory/verification.md` for commands, hashes, evidence, severity, and required remediation. Do not release this candidate as `pwa-offline` until a fresh live context reaches `navigator.serviceWorker.ready` and survives an offline reload.
+
 ## Shipped
 
 - A mobile-first, installable PWA for link-based and local-file listening sessions.
