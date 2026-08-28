@@ -2,7 +2,7 @@
 
 Candidate repaired from `f2915bcbd07a378d4fac868ea97f9b44a897dc19`.
 
-Local visual evidence: `.factory/polish-1-mobile.png` (390 × 844) and `.factory/polish-1-desktop.png` (1440 × 900). Both show the rewritten first screen and isolated `?demo=1` banner. Live checks are recorded after deployment in the handoff.
+Local visual evidence: `.factory/polish-1-mobile.png` (390 × 844) and `.factory/polish-1-desktop.png` (1440 × 900). Live mobile evidence: `.factory/polish-1-live-mobile.png`. All show the rewritten first screen and isolated `?demo=1` banner.
 
 | Finding | Change made | Evidence |
 | --- | --- | --- |
@@ -37,3 +37,7 @@ Local visual evidence: `.factory/polish-1-mobile.png` (390 × 844) and `.factory
 - `npm run lint`, `npm test`, `npm run build`, `npm run test:e2e`, and `npm run test:update` passed.
 - `npm run test:e2e` passed 30 checks at desktop and 390 px, including Axe serious/critical = 0, offline reload, route/title/404 checks, malformed-backup console recovery, and every claim.
 - Strict preview headers returned 404 for `/does-not-exist`; the app JS is 19.1 KB raw and CSS 17.5 KB raw.
+
+## Live re-check
+
+Deployment `81521017-0ca9-4727-9f90-7b316670de48` was opened cold at <https://audio-reflection-markers.sociobot.in/?demo=1>. The 390 px Chromium check confirmed the sample marker, persistent banner/reset/start-real controls, only same-origin initial requests, zero Axe serious/critical findings, an activated service worker, offline reload, and no console errors. <https://audio-reflection-markers.sociobot.in/does-not-exist> returned HTTP 404 and the styled `This page is not here` page, including after the service worker controlled the browser. Root, demo, privacy, terms, sitemap, and share metadata all returned successfully.
