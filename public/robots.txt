@@ -1,2 +1,3 @@
 User-agent: *
 Allow: /
+Sitemap: https://audio-reflection-markers.sociobot.in/sitemap.xml

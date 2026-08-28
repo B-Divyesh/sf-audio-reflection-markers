@@ -1,6 +1,8 @@
 import type { Marker } from './types';
 
-const DB_NAME = 'reflection-markers';
+const DB_NAME = (location.pathname === '/demo' || new URLSearchParams(location.search).get('demo') === '1')
+  ? 'demo:reflection-markers'
+  : 'reflection-markers';
 const DB_VERSION = 1;
 const STORE = 'markers';
 
@@ -27,6 +29,14 @@ function requestResult<T>(request: IDBRequest<T>): Promise<T> {
   });
 }
 
+function transactionComplete(transaction: IDBTransaction): Promise<void> {
+  return new Promise((resolve, reject) => {
+    transaction.oncomplete = () => resolve();
+    transaction.onerror = () => reject(transaction.error ?? new Error('Local storage request failed'));
+    transaction.onabort = () => reject(transaction.error ?? new Error('Local storage request was cancelled'));
+  });
+}
+
 export async function getMarkers(): Promise<Marker[]> {
   const db = await database();
   const items = await requestResult(db.transaction(STORE).objectStore(STORE).getAll()) as Marker[];
@@ -35,26 +45,33 @@ export async function getMarkers(): Promise<Marker[]> {
 
 export async function saveMarker(marker: Marker): Promise<void> {
   const db = await database();
-  await requestResult(db.transaction(STORE, 'readwrite').objectStore(STORE).put(marker));
+  const transaction = db.transaction(STORE, 'readwrite');
+  const completed = transactionComplete(transaction);
+  await requestResult(transaction.objectStore(STORE).put(marker));
+  await completed;
 }
 
 export async function deleteMarker(id: string): Promise<void> {
   const db = await database();
-  await requestResult(db.transaction(STORE, 'readwrite').objectStore(STORE).delete(id));
+  const transaction = db.transaction(STORE, 'readwrite');
+  const completed = transactionComplete(transaction);
+  await requestResult(transaction.objectStore(STORE).delete(id));
+  await completed;
 }
 
 export async function clearMarkers(): Promise<void> {
   const db = await database();
-  await requestResult(db.transaction(STORE, 'readwrite').objectStore(STORE).clear());
+  const transaction = db.transaction(STORE, 'readwrite');
+  const completed = transactionComplete(transaction);
+  await requestResult(transaction.objectStore(STORE).clear());
+  await completed;
 }
 
 export async function replaceMarkers(markers: Marker[]): Promise<void> {
   const db = await database();
   const transaction = db.transaction(STORE, 'readwrite');
+  const completed = transactionComplete(transaction);
   transaction.objectStore(STORE).clear();
   for (const marker of markers) transaction.objectStore(STORE).put(marker);
-  await new Promise<void>((resolve, reject) => {
-    transaction.oncomplete = () => resolve();
-    transaction.onerror = () => reject(transaction.error ?? new Error('Could not import markers'));
-  });
+  await completed;
 }

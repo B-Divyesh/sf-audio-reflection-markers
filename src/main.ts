@@ -3,6 +3,21 @@ import { clearMarkers, deleteMarker, getMarkers, replaceMarkers, saveMarker } fr
 import type { Backup, BackupMarker, Marker, ReviewResult, SourceInfo } from './types';
 import { escapeHtml, formatTime, isDue, markersToCsv, markersToMarkdown, parseTime, sourceTimestampUrl } from './utils';
 
+const demoMode = location.pathname === '/demo' || new URLSearchParams(location.search).get('demo') === '1';
+const sourceKey = demoMode ? 'demo:arm-source' : 'arm-source';
+const demoMarkers: Marker[] = [
+  {
+    id: 'demo-lecture-bridge', createdAt: '2026-08-20T09:15:00.000Z', updatedAt: '2026-08-20T09:15:00.000Z',
+    source: { kind: 'link', title: 'Designing better questions — lecture', reference: 'https://example.com/designing-better-questions' },
+    seconds: 754, takeaway: 'Name the decision before collecting more options.', cue: 'What decision is this research meant to support?', actionDate: '2026-09-03', reviews: []
+  },
+  {
+    id: 'demo-lecture-constraint', createdAt: '2026-08-19T16:30:00.000Z', updatedAt: '2026-08-19T16:30:00.000Z',
+    source: { kind: 'link', title: 'Designing better questions — lecture', reference: 'https://example.com/designing-better-questions' },
+    seconds: 1302, takeaway: 'A useful constraint makes the next action smaller.', cue: 'Which constraint would make this easier to start?', actionDate: '', reviews: [{ date: '2026-08-22T12:00:00.000Z', result: 'remembered' }]
+  }
+];
+
 const $ = <T extends Element>(selector: string): T => {
   const element = document.querySelector<T>(selector);
   if (!element) throw new Error(`Missing element: ${selector}`);
@@ -57,7 +72,7 @@ function setSource(next: SourceInfo, persist = true): void {
   const link = $('#active-link') as HTMLAnchorElement;
   link.hidden = !next.reference;
   link.href = next.reference || '#';
-  if (persist && next.kind !== 'file') localStorage.setItem('arm-source', JSON.stringify(next));
+  if (persist && next.kind !== 'file') localStorage.setItem(sourceKey, JSON.stringify(next));
 }
 
 function currentSeconds(): number {
@@ -444,10 +459,15 @@ function setupEvents(): void {
   });
   document.addEventListener('click', (event) => { if (!(event.target as Element).closest('#export-menu, #export-button')) exportMenu.hidden = true; });
   $('#data-button').addEventListener('click', () => openDialog(dataDialog));
+  const resetDemo = document.querySelector<HTMLButtonElement>('#reset-demo');
+  resetDemo?.addEventListener('click', () => void resetDemoData());
+  document.querySelector<HTMLAnchorElement>('#start-real')?.addEventListener('click', () => {
+    // This link intentionally leaves the demo database untouched. It is a separate namespace.
+  });
   $('#export-json').addEventListener('click', () => void exportBackup());
   $('#import-json').addEventListener('change', (event) => {
     const file = (event.currentTarget as HTMLInputElement).files?.[0];
-    if (file) void importBackup(file).catch((error) => { console.error(error); showToast('That file is not a valid backup. Nothing was changed.'); });
+    if (file) void importBackup(file).catch(() => { showToast('That file is not a valid backup. Nothing was changed.'); });
   });
   $('#clear-data').addEventListener('click', async () => {
     if (!markers.length) { showToast('There are no markers to delete.'); return; }
@@ -483,7 +503,7 @@ function setupServiceWorker(): void {
 
 function restoreSource(): void {
   try {
-    const saved = JSON.parse(localStorage.getItem('arm-source') ?? 'null') as SourceInfo | null;
+    const saved = JSON.parse(localStorage.getItem(sourceKey) ?? 'null') as SourceInfo | null;
     if (saved?.kind === 'link' || saved?.kind === 'manual') {
       setSource(saved, false);
       if (saved.kind === 'link') {
@@ -494,5 +514,45 @@ function restoreSource(): void {
   } catch { setSource(source, false); }
 }
 
-setupEvents(); restoreSource(); updateClock(); updateConnection(); setupServiceWorker(); void refresh();
+async function resetDemoData(announce = true): Promise<void> {
+  if (!demoMode) return;
+  await replaceMarkers(demoMarkers.map((marker) => structuredClone(marker)));
+  localStorage.setItem(sourceKey, JSON.stringify(demoMarkers[0]!.source));
+  setSource(demoMarkers[0]!.source, false);
+  timerSeconds = demoMarkers[0]!.seconds;
+  timerBase = timerSeconds;
+  updateClock();
+  await refresh();
+  if (announce) showToast('Sample markers reset. Your real markers were not changed.');
+}
+
+function setDocumentRoute(): void {
+  if (demoMode) {
+    document.title = 'Demo — Audio Reflection Markers';
+    document.querySelector('link[rel="canonical"]')?.setAttribute('href', `${location.origin}/demo`);
+    const title = 'Demo — Audio Reflection Markers';
+    const description = 'Try sample podcast and lecture markers without changing your own browser data.';
+    document.querySelector('meta[name="description"]')?.setAttribute('content', description);
+    document.querySelector('meta[property="og:title"]')?.setAttribute('content', title);
+    document.querySelector('meta[property="og:description"]')?.setAttribute('content', description);
+    document.querySelector('meta[name="twitter:title"]')?.setAttribute('content', title);
+    document.querySelector('meta[name="twitter:description"]')?.setAttribute('content', description);
+  }
+}
+
+async function start(): Promise<void> {
+  setupEvents();
+  setDocumentRoute();
+  ($('#demo-banner') as HTMLElement).hidden = !demoMode;
+  if (demoMode && !(await getMarkers()).length) await resetDemoData(false);
+  restoreSource(); updateClock(); updateConnection(); setupServiceWorker(); await refresh();
+  if (demoMode) {
+    const heading = $('#page-title') as HTMLElement;
+    heading.tabIndex = -1;
+    heading.focus();
+    $('.route-status').textContent = 'Demo opened.';
+  }
+}
+
+void start();
 window.addEventListener('online', updateConnection); window.addEventListener('offline', updateConnection);

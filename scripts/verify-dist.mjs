@@ -34,5 +34,11 @@ for (const [actual, expected, label] of requiredPolicies) {
 for (const header of ['Content-Security-Policy', 'Permissions-Policy']) {
   if (!config.globalHeaders?.[header]) throw new Error(`Missing ${header} deployment policy.`);
 }
+if (config.responseOverrides?.['404']?.rewrite !== '/404.html' || config.responseOverrides?.['404']?.statusCode !== 404) {
+  throw new Error('Missing designed 404 response override.');
+}
+for (const file of ['404.html', 'sitemap.xml', 'social-card.svg']) {
+  if (!(await stat(new URL(file, dist))).isFile()) throw new Error(`Missing required public route artifact: ${file}`);
+}
 
 console.log(`Verified ${precache.length} precache URLs and Azure response policies.`);

@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630" role="img" aria-label="Abstract orbital marker illustration">
+  <rect width="1200" height="630" fill="#111512"/>
+  <g fill="none" stroke="#3a453c" stroke-width="3"><ellipse cx="610" cy="330" rx="400" ry="172"/><ellipse cx="610" cy="330" rx="290" ry="120"/><ellipse cx="610" cy="330" rx="170" ry="70"/></g>
+  <path d="M610 104 720 250 610 410 500 250Z" fill="#f4f0e5" opacity=".92"/>
+  <circle cx="903" cy="209" r="29" fill="#d8f35a"/><circle cx="345" cy="408" r="13" fill="#78d8c8"/><circle cx="761" cy="454" r="13" fill="#ff8066"/>
+  <path d="M914 212 1020 130" stroke="#d8f35a" stroke-width="4"/>
+</svg>

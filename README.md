@@ -1,19 +1,23 @@
 # Audio Reflection Markers
 
-Audio Reflection Markers is a private, local-first PWA for podcast and lecture listeners who want to turn one useful moment into one short recall or action prompt. It deliberately does not download, transcribe, summarize, or share media.
+Mark useful moments from podcasts and lectures. Save one short cue to revisit later.
 
 Live product: <https://audio-reflection-markers.sociobot.in>
 
 ## What it does
 
-- References a user-supplied episode/lecture URL with a manual synced timer.
-- Plays a user-selected local audio or video file without uploading it.
+- Saves an episode or lecture link and provides a manual timer.
+- Plays a local audio or video file without uploading it.
 - Captures a timestamp plus a typed takeaway or optional local voice note.
 - Adds an optional future recall cue and check date.
-- Runs a reveal-first recall check and records remembered/revisit/action outcomes.
-- Persists markers and voice notes in IndexedDB across sessions.
+- Shows your cue before the saved takeaway, then lets you mark what happened.
+- Keeps markers and voice notes in this browser between visits.
 - Exports Markdown, CSV, and a complete JSON backup; imports JSON backups.
-- Installs as a PWA and keeps the app shell usable offline after the first visit.
+- Can be installed and opened offline after the first visit.
+
+## Try the demo
+
+Open <https://audio-reflection-markers.sociobot.in/?demo=1>. It loads two saved lecture markers in a separate demo area. Reset demo restores the sample. Start for real leaves demo data behind.
 
 ## Run locally
 
@@ -47,7 +51,7 @@ Playwright is pinned to 1.58.2. If its browser is not already available, run `np
 
 ## Privacy and data model
 
-There is no backend, account, analytics, remote media processing, or third-party runtime script/font. Marker records and optional voice recordings stay in the browser’s IndexedDB. Local media files use temporary object URLs and are not persisted. A source link is stored only as a reference. Users should download a JSON backup before clearing site storage or moving devices.
+The app has no account, analytics, uploads, or remote media processing. Markers and voice recordings stay in this browser. Local media files are opened only for this session and are not saved. A source link is saved only as a reference. Download a JSON backup before clearing site storage or moving devices.
 
 See [`/privacy`](https://audio-reflection-markers.sociobot.in/privacy/) and [`/terms`](https://audio-reflection-markers.sociobot.in/terms/). The generated empty-state artwork is original to this product; its prompt and provenance are recorded in `.factory/design.md` and `assets/src/`.
 
@@ -64,7 +68,7 @@ See [`/privacy`](https://audio-reflection-markers.sociobot.in/privacy/) and [`/t
 
 ## Browser support
 
-Current Chromium, Firefox, and Safari are targeted. Voice recording depends on `MediaRecorder` and microphone permission; typed takeaways remain available when recording is unsupported or denied.
+Current Chromium, Firefox, and Safari are targeted. Voice recording needs a browser that supports microphone recording. You can always type a takeaway instead.
 
 ## License
 

@@ -26,7 +26,8 @@ createServer(async (request, response) => {
     try {
       if ((await stat(file)).isDirectory()) file = join(file, 'index.html');
     } catch {
-      if (!extname(pathname)) file = join(root, 'index.html');
+      if (pathname === '/demo' || pathname === '/demo/') file = join(root, 'demo', 'index.html');
+      else throw new Error('Not found');
     }
     const body = await readFile(file);
     const headers = { ...security, 'Content-Type': mime[extname(file)] ?? 'application/octet-stream' };
@@ -36,6 +37,7 @@ createServer(async (request, response) => {
     else headers['Cache-Control'] = 'public, must-revalidate, max-age=30';
     response.writeHead(200, headers).end(body);
   } catch {
-    response.writeHead(404, { ...security, 'Content-Type': 'text/plain; charset=utf-8' }).end('Not found');
+    const notFound = await readFile(join(root, '404.html'));
+    response.writeHead(404, { ...security, 'Content-Type': 'text/html; charset=utf-8' }).end(notFound);
   }
 }).listen(port, '127.0.0.1', () => console.log(`Strict static server listening on http://127.0.0.1:${port}`));

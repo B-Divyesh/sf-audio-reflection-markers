@@ -4,11 +4,20 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
     <meta name="theme-color" content="#111512" />
-    <meta name="description" content="Catch one useful moment from any recording, turn it into a recall cue, and revisit it later." />
+    <meta name="description" content="Mark useful moments in podcasts and lectures, then save a short cue to revisit later." />
+    <link rel="canonical" href="https://audio-reflection-markers.sociobot.in/" />
+    <meta property="og:title" content="Audio Reflection Markers — mark audio moments" />
+    <meta property="og:description" content="Mark useful moments in podcasts and lectures, then save a short cue to revisit later." />
+    <meta property="og:image" content="https://audio-reflection-markers.sociobot.in/social-card.svg" />
+    <meta property="og:type" content="website" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Audio Reflection Markers — mark audio moments" />
+    <meta name="twitter:description" content="Mark useful moments in podcasts and lectures, then save a short cue to revisit later." />
+    <meta name="twitter:image" content="https://audio-reflection-markers.sociobot.in/social-card.svg" />
     <link rel="manifest" href="/manifest.webmanifest" />
     <link rel="icon" href="/icon-192.png" />
     <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
-    <title>Audio Reflection Markers — remember what matters</title>
+    <title>Audio Reflection Markers — mark audio moments</title>
   </head>
   <body>
     <a class="skip-link" href="#main">Skip to main content</a>
@@ -17,29 +26,30 @@
         <svg viewBox="0 0 48 48" aria-hidden="true"><ellipse cx="24" cy="26" rx="17" ry="14"/><circle cx="15" cy="13" r="5"/><path d="M27 22h10v10h-6l-4 4Z"/></svg>
         <span>Reflection<br />Markers</span>
       </a>
+      <nav class="header-nav" aria-label="Product">
+        <a href="/demo">Demo</a><a href="#listening-desk">Mark audio</a><a href="/privacy/">Privacy</a>
+      </nav>
       <div class="header-actions">
         <span class="connection" id="connection"><span aria-hidden="true"></span>Offline-ready</span>
-        <button class="icon-button" id="data-button" type="button" aria-label="Open data and settings" title="Data and settings">
-          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v12m0 0 4-4m-4 4-4-4M5 19h14"/></svg>
-        </button>
+        <button class="text-button data-button" id="data-button" type="button" title="Open data and settings">Data</button>
       </div>
     </header>
 
     <main id="main">
       <section class="masthead" aria-labelledby="page-title">
-        <p class="eyebrow"><span>01</span> Listen with intent</p>
-        <h1 id="page-title">Keep the moment.<br /><em>Recall the meaning.</em></h1>
-        <p>Drop a marker while you listen. Leave one takeaway and one cue for your future self—without summarizing the whole thing.</p>
+        <p class="eyebrow"><span>01</span> Save a listening marker</p>
+        <h1 id="page-title">Mark useful moments in audio</h1>
+        <div class="masthead-copy"><p>For podcast and lecture listeners who want one short cue to revisit later.</p><div class="hero-action"><a class="button primary" href="/?demo=1">Try it with sample data</a><span>Opens a saved lecture marker and its recall cue.</span></div><ul class="plain-facts"><li>No payment or account</li><li>Markers stay in this browser</li><li>Works offline after your first visit</li></ul></div>
       </section>
 
       <div class="workspace">
-        <section class="listening-desk" aria-labelledby="listen-heading">
+        <section class="listening-desk" id="listening-desk" aria-labelledby="listen-heading">
           <div class="section-heading">
             <div>
               <p class="section-index">Listening desk / live</p>
               <h2 id="listen-heading">What are you listening to?</h2>
             </div>
-            <span class="local-badge">Stays on this device</span>
+            <span class="local-badge">Saved in this browser</span>
           </div>
 
           <div class="source-switch" role="tablist" aria-label="Audio source type">
@@ -59,13 +69,13 @@
               </div>
               <button class="button secondary source-submit" type="submit">Set source</button>
             </form>
-            <p class="field-note">The link is a reference only. Open it in its original app, then use the synced timer here.</p>
+            <p class="field-note">The link is saved only as a reference. Start the manual timer here when playback starts.</p>
           </div>
 
           <div id="file-panel" role="tabpanel" aria-labelledby="tab-file" hidden>
             <label class="file-drop" for="media-file">
               <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 16V4m0 0L8 8m4-4 4 4M4 15v4h16v-4"/></svg>
-              <span><strong>Choose an audio or video file</strong><small>Played here only. The file is never uploaded or copied.</small></span>
+              <span><strong>Choose an audio or video file</strong><small>Played here only. The file is not uploaded or saved.</small></span>
               <input id="media-file" type="file" accept="audio/*,video/*" />
             </label>
           </div>
@@ -103,7 +113,7 @@
             </div>
             <div class="ledger-actions">
               <button class="text-button" id="filter-button" type="button" aria-pressed="false">Due only</button>
-              <button class="text-button" id="export-button" type="button">Export</button>
+              <button class="text-button" id="export-button" type="button">Export markers</button>
             </div>
           </div>
           <div class="progress-wrap" id="progress-wrap" hidden>
@@ -114,8 +124,8 @@
           <div id="empty-state" class="empty-state">
             <img src="/assets/memory-orbit.webp" width="840" height="840" alt="An abstract dark orbit with one glowing marker becoming a folded paper cue" fetchpriority="high" decoding="async" />
             <div>
-              <p class="empty-kicker">Your first node is waiting</p>
-              <h3>Mark the thought—not the whole episode.</h3>
+              <p class="empty-kicker">No markers yet</p>
+              <h3>Save your first marker</h3>
               <p>Set a source, press <strong>Mark this moment</strong>, and write the question you want your future self to answer.</p>
             </div>
           </div>
@@ -124,10 +134,15 @@
     </main>
 
     <footer>
-      <p>Private by design. No uploads, accounts, analytics, or AI summaries.</p>
-      <nav aria-label="Legal"><a href="/privacy/">Privacy</a><a href="/terms/">Terms</a></nav>
-      <p class="generated-note">Orbital artwork generated for this product with Azure AI Foundry.</p>
+      <p>Save short audio cues to revisit later.</p>
+      <nav aria-label="Footer"><a href="/privacy/">Privacy</a><a href="/terms/">Terms</a><a href="/demo">Demo</a></nav>
+      <p class="footer-meta">Built by Param Factory · v1.0.1</p>
     </footer>
+
+    <aside class="demo-banner" id="demo-banner" aria-label="Demo mode" hidden>
+      <span><strong>Demo</strong> — sample data, nothing is saved</span>
+      <div><button class="text-button" id="reset-demo" type="button">Reset demo</button><a class="text-button" id="start-real" href="/">Start for real</a></div>
+    </aside>
 
     <dialog id="marker-dialog" class="sheet" aria-labelledby="marker-dialog-title">
       <form id="marker-form" method="dialog">
@@ -208,6 +223,7 @@
       <button type="button" data-export="csv">Download CSV</button>
     </div>
     <div class="toast" id="toast" role="status" aria-live="polite" hidden><span id="toast-message"></span><button id="toast-action" type="button" aria-label="Complete notification action" hidden></button></div>
+    <p class="route-status" aria-live="polite" aria-atomic="true"></p>
     <script type="module" src="/src/main.ts"></script>
   </body>
 </html>
