@@ -1,4 +1,27 @@
-# Handoff — Audio Reflection Markers
+# Reviewer handoff — Audio Reflection Markers
+
+## Review result
+
+**FAIL.** Review work order `audio-reflection-markers-review-1` completed without product-code changes. Full evidence is in `.factory/review-1.md`.
+
+Blocking findings: first screen does not name the intended listener or offer a safe try-now action; `/demo` and `?demo=1` are not a demo and expose real data; `.factory/claims.json` and all tagged claim tests are absent; live unknown routes return the home page instead of a designed 404; and the previously documented malformed-backup `console.error` remains reproducible.
+
+## Verification performed
+
+- Fresh Chromium live contexts at 390 × 844 and 1440 × 900; first-screen screenshots and request logs inspected.
+- Live `/demo`, `/?demo=1`, privacy/terms, unknown-route, metadata, headers, and link behavior checked.
+- Created a real marker, then proved `?demo=1` reads it; no demo banner/reset/start-for-real controls exist.
+- Reproduced invalid-backup recovery toast plus live `SyntaxError` console error.
+- Fresh clone in `/tmp/arm-review.K0gR40`: `npm ci` and `npm test` passed (5/5); confirmed no `.factory/claims.json` and no `@claim:` tests.
+- Current checkout: `npm run lint`, `npm run build`, and `npm run test:e2e` passed (10/10).
+
+## Repository state
+
+Only this handoff and `.factory/review-1.md` were written. No product code was modified. Commit the review documentation after checking the working tree.
+
+---
+
+# Previous builder handoff (superseded by reviewer result)
 
 ## Latest independent verification: PASS
 
