@@ -55,8 +55,32 @@ test('reloads the app while offline after its first visit', async ({ page, conte
   await page.goto('/');
   await page.evaluate(() => navigator.serviceWorker.ready);
   await page.reload();
+  await expect.poll(() => page.evaluate(() => Boolean(navigator.serviceWorker.controller))).toBe(true);
   await context.setOffline(true);
   await page.reload();
   await expect(page.getByRole('heading', { level: 1 })).toContainText('Keep the moment');
   await expect(page.getByText('Working offline')).toBeVisible();
+});
+
+test('precache URLs exist on a strict host and deployment policies are present', async ({ request }) => {
+  const worker = await request.get('/sw.js');
+  expect(worker.ok()).toBe(true);
+  expect(worker.headers()['cache-control']).toBe('no-cache');
+  const source = await worker.text();
+  const match = source.match(/const PRECACHE=(\[[^;]+\])/);
+  expect(match).not.toBeNull();
+  const precache = JSON.parse(match![1]) as string[];
+  for (const url of precache) {
+    const response = await request.get(url);
+    expect(response.status(), `${url} must be deployable`).toBe(200);
+    if (url.endsWith('.js')) expect(response.headers()['content-type']).toContain('text/javascript');
+  }
+
+  const asset = await request.get(precache.find((url) => url.startsWith('/assets/') && url.endsWith('.js'))!);
+  expect(asset.headers()['cache-control']).toBe('public, max-age=31536000, immutable');
+  const manifest = await request.get('/manifest.webmanifest');
+  expect(manifest.headers()['content-type']).toContain('application/manifest+json');
+  const root = await request.get('/');
+  expect(root.headers()['content-security-policy']).toContain("default-src 'self'");
+  expect(root.headers()['permissions-policy']).toContain('microphone=(self)');
 });

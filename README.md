@@ -37,8 +37,9 @@ The exact deployment build command is `npm run build`, and the static deploy dir
 
 ```bash
 npm test          # unit tests
-npm run test:e2e # mobile capture/recall, axe, and offline tests
-npm run build    # typecheck, production build, JS/CSS budget check
+npm run build     # typecheck, production build, precache/policy and budget checks
+npm run test:e2e  # desktop + 390px workflows, axe, strict-host offline/policy tests
+npm run test:update # real service-worker update and in-app reload notice
 ```
 
 Playwright is pinned to 1.58.2. If its browser is not already available, run `npx playwright install chromium` once.
@@ -55,7 +56,8 @@ See [`/privacy`](https://audio-reflection-markers.sociobot.in/privacy/) and [`/t
 - `src/db.ts` — small IndexedDB persistence layer.
 - `src/styles.css` — product-specific responsive visual system.
 - `public/manifest.webmanifest` — install metadata and icons.
-- `vite.config.ts` — multi-page build and generated precaching service worker.
+- `vite.config.ts` — multi-page build and post-emit precaching service worker.
+- `public/staticwebapp.config.json` — Azure cache, MIME, CSP, and permissions policy.
 - `tests/` — Vitest unit tests and Playwright mobile/offline/accessibility tests.
 - `.factory/design.md` — visual thesis, tokens, interaction rules, and asset provenance.
 
