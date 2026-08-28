@@ -129,7 +129,7 @@
       <p class="generated-note">Orbital artwork generated for this product with Azure AI Foundry.</p>
     </footer>
 
-    <dialog id="marker-dialog" class="sheet">
+    <dialog id="marker-dialog" class="sheet" aria-labelledby="marker-dialog-title">
       <form id="marker-form" method="dialog">
         <div class="dialog-top">
           <div><p class="section-index">Capture / <span id="capture-time">00:00</span></p><h2 id="marker-dialog-title">Mark this moment</h2></div>
@@ -168,9 +168,9 @@
       </form>
     </dialog>
 
-    <dialog id="review-dialog" class="sheet review-sheet">
+    <dialog id="review-dialog" class="sheet review-sheet" aria-labelledby="review-dialog-title">
       <div class="dialog-top">
-        <div><p class="section-index">Recall check</p><h2>Before you reveal it…</h2></div>
+        <div><p class="section-index">Recall check</p><h2 id="review-dialog-title">Before you reveal it…</h2></div>
         <button class="icon-button dialog-close" type="button" data-close="review-dialog" aria-label="Close review">×</button>
       </div>
       <p class="review-source" id="review-source"></p>
@@ -188,9 +188,9 @@
       </div>
     </dialog>
 
-    <dialog id="data-dialog" class="sheet data-sheet">
+    <dialog id="data-dialog" class="sheet data-sheet" aria-labelledby="data-dialog-title">
       <div class="dialog-top">
-        <div><p class="section-index">Local data</p><h2>Own your markers</h2></div>
+        <div><p class="section-index">Local data</p><h2 id="data-dialog-title">Own your markers</h2></div>
         <button class="icon-button dialog-close" type="button" data-close="data-dialog" aria-label="Close data settings">×</button>
       </div>
       <p>Everything lives in this browser. Export a complete backup before clearing site data or moving devices.</p>
@@ -207,7 +207,7 @@
       <button type="button" data-export="markdown">Download Markdown</button>
       <button type="button" data-export="csv">Download CSV</button>
     </div>
-    <div class="toast" id="toast" role="status" aria-live="polite" hidden><span id="toast-message"></span><button id="toast-action" type="button" hidden></button></div>
+    <div class="toast" id="toast" role="status" aria-live="polite" hidden><span id="toast-message"></span><button id="toast-action" type="button" aria-label="Complete notification action" hidden></button></div>
     <script type="module" src="/src/main.ts"></script>
   </body>
 </html>

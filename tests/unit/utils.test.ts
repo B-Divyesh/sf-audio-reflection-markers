@@ -26,6 +26,7 @@ describe('review and exports', () => {
   it('identifies a marker whose check date has passed', () => {
     expect(isDue(marker, new Date('2026-08-22T12:00:00Z'))).toBe(true);
     expect(isDue({ ...marker, reviews: [{ date: '2026-08-22T11:00:00Z', result: 'remembered' }] }, new Date('2026-08-22T12:00:00Z'))).toBe(false);
+    expect(isDue({ ...marker, actionDate: '', reviews: [{ date: '2026-08-22T11:00:00Z', result: 'revisit' }] })).toBe(true);
   });
   it('exports useful Markdown and safe CSV', () => {
     expect(markersToMarkdown([marker])).toContain('**Recall cue:** What should I capture?');

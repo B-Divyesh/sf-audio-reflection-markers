@@ -22,9 +22,10 @@ export function parseTime(value: string): number | null {
 }
 
 export function isDue(marker: Marker, today = new Date()): boolean {
-  if (!marker.actionDate) return marker.reviews.length === 0;
-  const end = new Date(`${marker.actionDate}T23:59:59`);
   const lastReview = marker.reviews.at(-1);
+  if (lastReview?.result === 'revisit') return true;
+  if (!marker.actionDate) return !lastReview;
+  const end = new Date(`${marker.actionDate}T23:59:59`);
   return end.getTime() <= today.getTime() && (!lastReview || lastReview.date.slice(0, 10) < marker.actionDate);
 }
 
