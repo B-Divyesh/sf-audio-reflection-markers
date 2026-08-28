@@ -37,6 +37,7 @@ The exact deployment build command is `npm run build`, and the static deploy dir
 
 ```bash
 npm test          # unit tests
+npm run lint      # TypeScript-aware lint
 npm run build     # typecheck, production build, precache/policy and budget checks
 npm run test:e2e  # desktop + 390px workflows, axe, strict-host offline/policy tests
 npm run test:update # real service-worker update and in-app reload notice

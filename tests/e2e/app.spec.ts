@@ -40,8 +40,7 @@ test('opens a local media file without uploading it', async ({ page }) => {
   await expect(page.locator('#media-mount audio')).toBeVisible();
 });
 
-test('has no serious accessibility violations at 390px', async ({ page }) => {
-  await page.setViewportSize({ width: 390, height: 844 });
+test('has no serious accessibility violations at the configured viewport', async ({ page }) => {
   await page.goto('/');
   await page.keyboard.press('m');
   await expect(page.getByRole('dialog', { name: 'Mark this moment' })).toBeVisible();
