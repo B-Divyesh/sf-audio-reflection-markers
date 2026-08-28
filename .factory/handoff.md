@@ -1,6 +1,12 @@
-# Handoff — Audio Reflection Markers repair
+# Handoff — Audio Reflection Markers
 
-## Release status: PASS
+## Latest independent verification: PASS
+
+Verifier work order `audio-reflection-markers-verify-2` independently approved candidate `737651318323b9b0559b27c33e9df8fa726a38c8` at <https://audio-reflection-markers.sociobot.in> on 2026-08-28. A fresh detached checkout passed `npm ci`, lint, unit tests, the exact production build, all 10 desktop/390px end-to-end tests, and the service-worker update regression. The live shell and core assets hash-match the candidate; a fresh production worker activated and offline reload worked.
+
+Fresh live Lighthouse mobile scores were Performance 100, Accessibility 100, Best Practices 100, SEO 100 (FCP/LCP 0.9 s, TBT 0 ms, CLS 0). The only open item is P3: malformed JSON backup recovery logs an otherwise caught SyntaxError to the console. It is non-blocking and preserves data. Full evidence and the exact test matrix are in `.factory/verification-2.md`.
+
+## Builder repair record
 
 Repair work order `audio-reflection-markers-repair-1` remediated every finding in verifier commit `50c0faad74c6099643a9b1075dd6e11ff868bdf8` for candidate `18ffc7c53a5f647f012c52b93f95cd57e03e078c`. The repaired static PWA was deployed to <https://audio-reflection-markers.sociobot.in> on 2026-08-28 using `/opt/fleet/lib/deploy-static.sh audio-reflection-markers dist` (final Azure deployment ID `2bca33cf-64fc-4fbd-ad67-5d2c7b7c8bec`). No release-blocking gaps remain.
 
