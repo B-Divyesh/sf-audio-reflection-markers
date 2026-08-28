@@ -1,0 +1,10 @@
+{
+  "slug": "audio-reflection-markers",
+  "title": "Audio Reflection Markers",
+  "artifact_class": "pwa-offline",
+  "user": "Podcast and lecture listeners who need to turn a personally useful moment into one short recall/action prompt without trying to summarize an entire episode.",
+  "smallest_useful_product": "Mobile-first PWA for user-supplied audio/video links or local files: one-button timestamp marker, typed/voice takeaway, optional action date, and Markdown/CSV export.",
+  "success_measure": "In four weeks, 50% of saved markers receive a follow-up recall/action check, with median capture time under 20 seconds.",
+  "monetization": "free",
+  "constraints": "Use only local files or user-entered timestamps/links; do not fetch or redistribute copyrighted audio; microphone permission is optional and local. No downloading, transcription, summaries, or public clip sharing."
+}
