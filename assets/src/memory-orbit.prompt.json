@@ -1,0 +1,6 @@
+{
+  "generator": "Azure AI Foundry factory image deployment via /opt/fleet/lib/gen-image.sh",
+  "date": "2026-08-28",
+  "useCase": "stylized-concept",
+  "prompt": "Use case: stylized-concept. Asset type: app empty-state and onboarding illustration. In a dark listening-room void, create one abstract orbital path made from charcoal paper and graphite, with a single translucent citrus marker separating into a small folded warm-ivory cue-card shape. Tactile editorial sculpture, restrained generative geometry, subtle muted-aqua and coral registration points, narrow soft studio light with deep controlled shadows, square centered composition and generous clean margins. No people, faces, headphones, microphones, speakers, screens, text, letters, numerals, logos, brands, watermark, generic waveform, gradients, glossy app icons, or clutter."
+}

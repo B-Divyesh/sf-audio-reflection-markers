@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-labelledby="title">
+  <title id="title">Audio Reflection Markers orbit symbol</title>
+  <rect width="512" height="512" rx="108" fill="#111512"/>
+  <path d="M104 286c0-93 62-166 152-166s152 73 152 166c0 65-57 106-152 106s-152-41-152-106Z" fill="none" stroke="#F4F0E5" stroke-width="30"/>
+  <circle cx="160" cy="149" r="43" fill="#D8F35A"/>
+  <path d="M281 252h87v87h-52l-35 35Z" fill="#F4F0E5"/>
+</svg>
