@@ -1,6 +1,6 @@
 import type { Marker } from './types';
 
-const DB_NAME = (location.pathname === '/demo' || new URLSearchParams(location.search).get('demo') === '1')
+const DB_NAME = (/^\/demo\/?$/.test(location.pathname) || new URLSearchParams(location.search).get('demo') === '1')
   ? 'demo:reflection-markers'
   : 'reflection-markers';
 const DB_VERSION = 1;

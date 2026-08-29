@@ -1,51 +1,21 @@
 [
-  {
-    "id": "offline-reload",
-    "claim": "Works offline after the first visit",
-    "where": "landing facts, README",
-    "test": "npm run test:e2e -- --grep @claim:offline-reload",
-    "sandbox": "fresh browser context; load /demo, activate service worker, set offline, reload, and use sample markers"
-  },
-  {
-    "id": "demo-isolation",
-    "claim": "Demo sample data never reads or writes real markers",
-    "where": "Demo banner, README",
-    "test": "npm run test:e2e -- --grep @claim:demo-isolation",
-    "sandbox": "create a real marker, enter /demo, create/reset a demo marker, then return to real mode"
-  },
-  {
-    "id": "local-only",
-    "claim": "Markers stay in this browser",
-    "where": "landing facts, privacy page",
-    "test": "npm run test:e2e -- --grep @claim:local-only",
-    "sandbox": "demo capture flow records every request and asserts only the same origin is used"
-  },
-  {
-    "id": "reference-only-manual-timer",
-    "claim": "Links are saved as references and the timer is manual",
-    "where": "link source note, README",
-    "test": "npm run test:e2e -- --grep @claim:reference-only-manual-timer",
-    "sandbox": "demo link source; assert the saved link and an explicit 15-second manual timer action"
-  },
-  {
-    "id": "local-file-no-upload",
-    "claim": "Local media is not uploaded",
-    "where": "local-file source note, README",
-    "test": "npm run test:e2e -- --grep @claim:local-file-no-upload",
-    "sandbox": "demo local WAV selection; assert an in-page audio element and only same-origin requests"
-  },
-  {
-    "id": "no-account-or-analytics",
-    "claim": "The app has no account or analytics",
-    "where": "privacy page, README",
-    "test": "npm run test:e2e -- --grep @claim:no-account-or-analytics",
-    "sandbox": "fresh /demo visit; assert the task works with no account fields and every request is same-origin"
-  },
-  {
-    "id": "no-payment-or-account",
-    "claim": "No payment or account is required",
-    "where": "landing facts",
-    "test": "npm run test:e2e -- --grep @claim:no-payment-or-account",
-    "sandbox": "fresh ?demo=1 visit; assert the task is available and no account or payment fields exist"
-  }
+  {"id":"offline-reload","claim":"Works offline after the first visit","where":"landing facts, README","test":"npm run test:e2e -- --grep @claim:offline-reload","sandbox":"fresh browser context; load /demo, activate the service worker, go offline, reload, and use sample markers"},
+  {"id":"demo-isolation","claim":"Demo sample data never reads or writes real markers","where":"demo banner, README","test":"npm run test:e2e -- --grep @claim:demo-isolation","sandbox":"create a real marker, enter /demo, change and reset demo data, then leave demo and verify the real marker"},
+  {"id":"local-only","claim":"Markers stay in this browser","where":"landing facts, privacy page, README","test":"npm run test:e2e -- --grep @claim:local-only","sandbox":"capture a demo marker while recording requests; assert same-origin GETs and the demo IndexedDB namespace"},
+  {"id":"reference-only-manual-timer","claim":"Links are saved as references and the timer is manual","where":"link source note, README","test":"npm run test:e2e -- --grep @claim:reference-only-manual-timer","sandbox":"set a demo link, assert it is retained as an href without fetching it, and advance the manual timer by 15 seconds"},
+  {"id":"local-file-no-upload","claim":"Local media is not uploaded","where":"local-file source note, README","test":"npm run test:e2e -- --grep @claim:local-file-no-upload","sandbox":"select a fixture WAV in demo, assert local playback, and assert all requests are same-origin GETs"},
+  {"id":"no-account-or-analytics","claim":"The app has no account or analytics","where":"privacy page, README","test":"npm run test:e2e -- --grep @claim:no-account-or-analytics","sandbox":"use the demo without account fields while asserting every request is same-origin"},
+  {"id":"no-payment-or-account","claim":"No payment or account is required","where":"landing facts","test":"npm run test:e2e -- --grep @claim:no-payment-or-account","sandbox":"open ?demo=1 and assert capture is enabled with no payment, upgrade, password, or checkout interface"},
+  {"id":"capture-marker","claim":"Captures a timestamp and typed takeaway","where":"main capture action, README","test":"npm run test:e2e -- --grep @claim:capture-marker","sandbox":"fresh demo; advance the timer, enter a typed takeaway, save it, and assert the rendered timestamped marker"},
+  {"id":"local-voice-note","claim":"Optional voice takeaways are stored in the browser without a network request","where":"marker editor, privacy page, README","test":"npm run test:e2e -- --grep @claim:local-voice-note","sandbox":"fresh demo with a fixture MediaRecorder; save a voice blob, assert playable output in demo IndexedDB, and allow same-origin GETs only"},
+  {"id":"recall-cue-and-date","claim":"A marker can include a recall cue and check date","where":"marker editor, README","test":"npm run test:e2e -- --grep @claim:recall-cue-and-date","sandbox":"fresh demo; save a typed marker with a cue and date, then assert both in the rendered marker and demo IndexedDB"},
+  {"id":"reveal-first-review","claim":"Review shows the cue before the takeaway and records the result","where":"review dialog, README","test":"npm run test:e2e -- --grep @claim:reveal-first-review","sandbox":"fresh demo sample; open Review, assert the takeaway is hidden until Reveal, choose a result, and verify it in demo IndexedDB"},
+  {"id":"marker-export","claim":"Exports markers as Markdown, CSV, and a complete JSON backup","where":"export controls, README","test":"npm run test:e2e -- --grep @claim:marker-export","sandbox":"fresh demo sample; download all three formats and assert filenames plus expected marker fields and rows"},
+  {"id":"backup-import","claim":"Imports a complete JSON marker backup","where":"data dialog, README","test":"npm run test:e2e -- --grep @claim:backup-import","sandbox":"fresh demo; import a valid fixture backup, confirm replacement, assert rendered data and verify real IndexedDB is untouched"},
+  {"id":"voice-unavailable-typed-fallback","claim":"A typed takeaway remains available when voice recording is unsupported","where":"README","test":"npm run test:e2e -- --grep @claim:voice-unavailable-typed-fallback","sandbox":"fresh demo with MediaRecorder and getUserMedia unavailable; assert the recovery message, then save a typed marker"},
+  {"id":"no-remote-media-processing","claim":"The app does not send media for remote processing","where":"privacy page, README","test":"npm run test:e2e -- --grep @claim:no-remote-media-processing","sandbox":"fresh demo; select a local fixture and record a fixture voice note while asserting every request remains a same-origin GET"},
+  {"id":"local-file-session-only","claim":"A selected local media file is not restored after reload","where":"local-file source note, privacy page, README","test":"npm run test:e2e -- --grep @claim:local-file-session-only","sandbox":"fresh demo; select a fixture WAV, reload, and assert its filename and media element are absent from DOM and storage"},
+  {"id":"microphone-on-action","claim":"Microphone permission is requested only after Record is pressed","where":"privacy page","test":"npm run test:e2e -- --grep @claim:microphone-on-action","sandbox":"fresh demo with a getUserMedia spy; assert zero calls on load and editor open, then one call after Record"},
+  {"id":"delete-all-markers","claim":"Manage marker data can delete every marker","where":"data dialog, privacy page","test":"npm run test:e2e -- --grep @claim:delete-all-markers","sandbox":"fresh demo sample; accept the specific destructive confirmation, then assert an empty marker list and empty demo IndexedDB"},
+  {"id":"no-media-copying-or-sharing","claim":"The app does not download, host, transcribe, or share source media","where":"terms page","test":"npm run test:e2e -- --grep @claim:no-media-copying-or-sharing","sandbox":"fresh demo; open a fixture locally, assert same-origin requests and local playback, and assert no media transfer, transcription, or clip-sharing controls"}
 ]

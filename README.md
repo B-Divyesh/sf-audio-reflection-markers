@@ -8,16 +8,16 @@ Live product: <https://audio-reflection-markers.sociobot.in>
 
 - Saves an episode or lecture link and provides a manual timer.
 - Plays a local audio or video file without uploading it.
-- Captures a timestamp plus a typed takeaway or optional local voice note.
+- Captures a timestamp with a typed takeaway or optional voice note.
 - Adds an optional future recall cue and check date.
 - Shows your cue before the saved takeaway, then lets you mark what happened.
 - Keeps markers and voice notes in this browser between visits.
 - Exports Markdown, CSV, and a complete JSON backup; imports JSON backups.
-- Can be installed and opened offline after the first visit.
+- Works offline after the first visit.
 
 ## Try the demo
 
-Open <https://audio-reflection-markers.sociobot.in/?demo=1>. It loads two saved lecture markers in a separate demo area. Reset demo restores the sample. Start for real leaves demo data behind.
+Open <https://audio-reflection-markers.sociobot.in/?demo=1>. It loads two saved lecture markers in a separate demo area. Reset demo restores the sample. Start for real discards demo changes.
 
 ## Run locally
 
@@ -51,9 +51,9 @@ Playwright is pinned to 1.58.2. If its browser is not already available, run `np
 
 ## Privacy and data model
 
-The app has no account, analytics, uploads, or remote media processing. Markers and voice recordings stay in this browser. Local media files are opened only for this session and are not saved. A source link is saved only as a reference. Download a JSON backup before clearing site storage or moving devices.
+The app has no account or analytics. It does not upload or remotely process your media. Markers and voice notes stay in this browser. Local media files are available only until you reload or close the page. A source link is saved only as a reference. Download a JSON backup before clearing site storage or moving devices.
 
-See [`/privacy`](https://audio-reflection-markers.sociobot.in/privacy/) and [`/terms`](https://audio-reflection-markers.sociobot.in/terms/). The generated empty-state artwork is original to this product; its prompt and provenance are recorded in `.factory/design.md` and `assets/src/`.
+See [`/privacy`](https://audio-reflection-markers.sociobot.in/privacy/) and [`/terms`](https://audio-reflection-markers.sociobot.in/terms/). Artwork provenance is recorded in `.factory/design.md` and `assets/src/`.
 
 ## Project structure
 
@@ -68,7 +68,7 @@ See [`/privacy`](https://audio-reflection-markers.sociobot.in/privacy/) and [`/t
 
 ## Browser support
 
-Current Chromium, Firefox, and Safari are targeted. Voice recording needs a browser that supports microphone recording. You can always type a takeaway instead.
+Automated browser checks use current Chromium. Voice recording needs microphone support. You can type a takeaway when voice recording is unavailable.
 
 ## License
 

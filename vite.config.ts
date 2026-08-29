@@ -24,7 +24,7 @@ function serviceWorker(): Plugin {
       // Rollup's generateBundle hook can still contain empty facade chunks that
       // Vite removes later. Build the list from disk so every URL is guaranteed
       // to exist on a strict static host.
-      const shell = ['/', '/index.html', '/demo/', '/404.html', '/offline.html', '/manifest.webmanifest', '/privacy/', '/terms/', '/icon-192.png', '/icon-512.png'];
+      const shell = ['/', '/index.html', '/demo/', '/404.html', '/offline.html', '/manifest.webmanifest', '/demo-mode.js', '/privacy/', '/terms/', '/icon-192.png', '/icon-512.png'];
       const assetsDir = join(outDir, 'assets');
       const assets = emittedFiles(assetsDir)
         .map((path) => `/${relative(outDir, path).split(sep).join('/')}`)

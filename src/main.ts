@@ -3,8 +3,9 @@ import { clearMarkers, deleteMarker, getMarkers, replaceMarkers, saveMarker } fr
 import type { Backup, BackupMarker, Marker, ReviewResult, SourceInfo } from './types';
 import { escapeHtml, formatTime, isDue, markersToCsv, markersToMarkdown, parseTime, sourceTimestampUrl } from './utils';
 
-const demoMode = location.pathname === '/demo' || new URLSearchParams(location.search).get('demo') === '1';
+const demoMode = /^\/demo\/?$/.test(location.pathname) || new URLSearchParams(location.search).get('demo') === '1';
 const sourceKey = demoMode ? 'demo:arm-source' : 'arm-source';
+document.body.classList.toggle('demo-mode', demoMode);
 const demoMarkers: Marker[] = [
   {
     id: 'demo-lecture-bridge', createdAt: '2026-08-20T09:15:00.000Z', updatedAt: '2026-08-20T09:15:00.000Z',
@@ -359,8 +360,7 @@ async function toggleRecording(): Promise<void> {
     $('#voice-button').classList.add('is-recording');
     $('#voice-button').querySelector('b')!.textContent = 'Stop recording';
     recordingTimeout = window.setTimeout(stopRecording, 60_000);
-  } catch (error) {
-    console.error(error);
+  } catch {
     showToast('Microphone access was not granted. You can still type your takeaway.');
   }
 }
@@ -461,8 +461,12 @@ function setupEvents(): void {
   $('#data-button').addEventListener('click', () => openDialog(dataDialog));
   const resetDemo = document.querySelector<HTMLButtonElement>('#reset-demo');
   resetDemo?.addEventListener('click', () => void resetDemoData());
-  document.querySelector<HTMLAnchorElement>('#start-real')?.addEventListener('click', () => {
-    // This link intentionally leaves the demo database untouched. It is a separate namespace.
+  document.querySelector<HTMLAnchorElement>('#start-real')?.addEventListener('click', (event) => {
+    event.preventDefault();
+    void clearMarkers().then(() => {
+      localStorage.removeItem(sourceKey);
+      location.assign('/');
+    });
   });
   $('#export-json').addEventListener('click', () => void exportBackup());
   $('#import-json').addEventListener('change', (event) => {
@@ -527,6 +531,11 @@ async function resetDemoData(announce = true): Promise<void> {
 }
 
 function setDocumentRoute(): void {
+  $('.footer-meta').textContent = 'Built by Param Factory · v1.0.2';
+  $('.listening-desk .section-index').textContent = 'Audio source';
+  const markerIndex = $('.marker-ledger .section-index');
+  markerIndex.childNodes[0]!.textContent = 'Saved markers / ';
+  $('.voice-panel small').textContent = 'Optional · stored in this browser';
   if (demoMode) {
     document.title = 'Demo — Audio Reflection Markers';
     document.querySelector('link[rel="canonical"]')?.setAttribute('href', `${location.origin}/demo`);
@@ -537,6 +546,7 @@ function setDocumentRoute(): void {
     document.querySelector('meta[property="og:description"]')?.setAttribute('content', description);
     document.querySelector('meta[name="twitter:title"]')?.setAttribute('content', title);
     document.querySelector('meta[name="twitter:description"]')?.setAttribute('content', description);
+    $('#page-title').textContent = 'Try two saved lecture markers';
   }
 }
 

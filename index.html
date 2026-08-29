@@ -15,8 +15,9 @@
     <meta name="twitter:description" content="Mark useful moments in podcasts and lectures, then save a short cue to revisit later." />
     <meta name="twitter:image" content="https://audio-reflection-markers.sociobot.in/social-card.svg" />
     <link rel="manifest" href="/manifest.webmanifest" />
-    <link rel="icon" href="/icon-192.png" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
     <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <script src="/demo-mode.js"></script>
     <title>Audio Reflection Markers — mark audio moments</title>
   </head>
   <body>
@@ -31,7 +32,7 @@
       </nav>
       <div class="header-actions">
         <span class="connection" id="connection"><span aria-hidden="true"></span>Offline-ready</span>
-        <button class="text-button data-button" id="data-button" type="button" title="Open data and settings">Data</button>
+        <button class="text-button data-button" id="data-button" type="button">Manage marker data</button>
       </div>
     </header>
 
@@ -46,7 +47,7 @@
         <section class="listening-desk" id="listening-desk" aria-labelledby="listen-heading">
           <div class="section-heading">
             <div>
-              <p class="section-index">Listening desk / live</p>
+              <p class="section-index">Audio source</p>
               <h2 id="listen-heading">What are you listening to?</h2>
             </div>
             <span class="local-badge">Saved in this browser</span>
@@ -108,7 +109,7 @@
         <section class="marker-ledger" aria-labelledby="markers-heading">
           <div class="section-heading ledger-heading">
             <div>
-              <p class="section-index">Reflection ledger / <span id="marker-count">0</span></p>
+              <p class="section-index">Saved markers / <span id="marker-count">0</span></p>
               <h2 id="markers-heading">Your markers</h2>
             </div>
             <div class="ledger-actions">
@@ -136,7 +137,7 @@
     <footer>
       <p>Save short audio cues to revisit later.</p>
       <nav aria-label="Footer"><a href="/privacy/">Privacy</a><a href="/terms/">Terms</a><a href="/demo">Demo</a></nav>
-      <p class="footer-meta">Built by Param Factory · v1.0.1</p>
+      <p class="footer-meta">Built by Param Factory · v1.0.2</p>
     </footer>
 
     <aside class="demo-banner" id="demo-banner" aria-label="Demo mode" hidden>
@@ -163,7 +164,7 @@
           <small class="error" id="takeaway-error" role="alert"></small>
         </div>
         <div class="voice-panel">
-          <div><strong>Or add a voice takeaway</strong><small>Optional · recorded and saved only on this device</small></div>
+          <div><strong>Or add a voice takeaway</strong><small>Optional · stored in this browser</small></div>
           <button class="button voice-button" id="voice-button" type="button"><span aria-hidden="true"></span><b>Record</b></button>
           <audio id="voice-preview" controls hidden></audio>
           <button class="text-button danger" id="remove-voice" type="button" hidden>Remove recording</button>
