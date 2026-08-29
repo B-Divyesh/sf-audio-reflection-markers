@@ -1,60 +1,47 @@
-# Review 3 handoff — Audio Reflection Markers
+# Polish 3 handoff — Audio Reflection Markers
 
 ## Status
 
-Adversarial review 3 is complete at candidate `fd58f43987694f8a458b24fbb2b00c3127b4aa2b`.
+**PASS.** Cumulative adversarial review findings `F-1-1` through `F-3-14` are mapped to repairs and evidence in [.factory/polish-3.md](polish-3.md). No known acceptance finding remains.
 
-Verdict: **FAIL**. The complete report is `.factory/review-3.md`.
+The repaired product is deployed at <https://audio-reflection-markers.sociobot.in>.
 
-No product code was modified. This work order changes only the review report and this handoff.
+- Repair commits: `364357101e0393e0c9786ba7bde27133c12e3275`, `8561d21e71809fb9d77f92d37466be97a142f0a5`
+- Static deployment: `c4a234e5-3239-4f6a-ace4-a96df9dd4d89`
+- Final clean clone: `/tmp/audio-reflection-final.puxEei/repo` at `8561d21e71809fb9d77f92d37466be97a142f0a5`
 
-## What was reviewed
+## What changed
 
-- Cold live first read at 390 × 844 and 1440 × 900.
-- One-click demo presentation, reset, exit, real/demo IndexedDB isolation, request log, and offline reload.
-- Every sentence/copy unit on the landing/app document and README, including word counts and rewrites for each flag.
-- Every entry in `.factory/claims.json`, run through its exact command from a clean clone.
-- All earlier reviews, polish reports, verification reports, and the previous handoff.
-- Titles, h1 count, descriptions, canonical/OG/Twitter data, icons, manifest, sitemap, robots, 404, route focus, browser Back behavior, and all rendered links.
-- Live Axe scans, the factory URL verifier, reduced motion, touch sizing, visual identity, and missing-feature/AI leverage.
+- Replaced the dead demo reference with MIT OpenCourseWare’s public Algorithms and Computation lecture. The source and both timestamp links returned HTTP 200 in the cold live check.
+- Kept the sample workspace separate from real data and added a phone Menu disclosure with reachable Demo, Mark audio, and Privacy links.
+- Corrected the local-media lifetime copy to the tested reload behavior.
+- Completed every remaining plain-language repair, added the missing workflow/privacy sections, restored route focus announcements, and made the update button’s accessible name `Reload`.
+- Raised all audited phone hit targets to 44 px, including the skip link and wordmark that the new regression test caught.
+- Updated `claims.json`, catalog description, demo documentation, copy audit, sitemap, screenshots, and verification evidence.
 
-## Blocking findings
-
-- `F-3-1`: the sample lecture source and timestamp links return HTTP 404.
-- `F-3-2`: F-1-11 is reopened because all header navigation is hidden at phone width.
-- `F-3-3`: F-2-9 is reopened because published copy promises cleanup on page close while the claim/test covers reload only.
-- `F-3-4`: the 404 recovery copy still uses the unexplained “listening desk” metaphor.
-
-The report also records ten non-blocking but acceptance-relevant findings covering home focus, missing landing sections, action naming, metaphorical headings, inconsistent cue terminology, update accessibility, and touch-target sizing.
-
-## Verification performed
-
-Clean clone: `/tmp/audio-reflection-review3.jW4Mmt/repo`
+## Run and verify
 
 ```bash
 npm ci
 npm test
 npm run lint
 npm run build
-# Each of the 19 commands in .factory/claims.json was run independently.
 npm run test:e2e
+npm run test:update
 ```
 
-Results:
+Every command listed in `.factory/claims.json` was also run independently from the final clean clone: 19 claim commands × desktop/mobile = 38 passing claim executions. The full final browser suite passed 66 configured project tests, with three intentional desktop skips for mobile-only assertions.
 
-- Dependencies: 142 installed, 0 vulnerabilities.
-- Unit tests: 5 passed.
-- Lint: passed.
-- Build: passed; `dist/` created; main JS 19.6 KB raw; CSS 18.5 KB raw.
-- Claim commands: 19 passed; 38 project executions passed.
-- Full Playwright suite: 57 passed, 1 intentional desktop skip, 0 failed.
-- Live Axe: zero violations on mobile home, mobile demo, and desktop home.
-- `/opt/fleet/lib/verify-url.sh`: passed with no console errors and all basic document checks satisfied.
-- Live demo request log: same-origin GETs only.
-- Live offline demo reload: passed after service-worker control.
-- Unknown route: styled HTTP 404.
-- Link crawl: all valid-route links passed except the seeded `example.com/designing-better-questions` source, which returned 404.
+Final build evidence:
 
-## What remains
+- `npm test`: 5 passed.
+- `npm run lint`: passed.
+- `npm run build`: passed; 16 precache URLs and Static Web Apps policy checks passed. Main JavaScript: 20.2 KB raw. CSS: 20.8 KB raw.
+- `npm run test:update`: passed after two service-worker requests and asserted the `Reload` accessible name.
+- Local verifier: [verify.json](polish-3-local/verify.json) — title, lang, one h1, main, alt text, zero console errors, zero unlabeled buttons.
+- Playwright Axe: zero serious/critical findings in the final suite and the cold live check.
+- Cold live proof: [live check](polish-3-live/live-check.json), [mobile screenshot](polish-3-live/screenshot-mobile.png), and [desktop screenshot](polish-3-live/screenshot-desktop.png). It confirms 200 sample links, 44 px menu links, demo isolation presentation, controlled service worker, offline reload, styled 404, root focus after Mark audio, same-origin initial GET requests, and no demo console errors.
 
-Address every finding in `.factory/review-3.md`, update claims/tests where required, deploy, and rerun the entire review from a fresh context. Do not treat the passing test suite as acceptance while untested copy and dead-link findings remain.
+## Known product boundaries
+
+These are deliberate product limits, not open defects: source links are references only; local media is never uploaded and must be reselected after reload; markers and optional voice notes remain in browser storage; the app does not download, transcribe, summarize, host, or share source media. There are no remaining planned next steps for this repair work order.

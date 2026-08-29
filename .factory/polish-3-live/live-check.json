@@ -1,0 +1,37 @@
+{
+  "commit": "8561d21e71809fb9d77f92d37466be97a142f0a5",
+  "url": "https://audio-reflection-markers.sociobot.in/?demo=1",
+  "viewport": "390x844",
+  "checked_at": "2026-08-29T01:57:00Z",
+  "demo": {
+    "heading": "Try two saved lecture markers",
+    "sample_takeaway": "State the input and desired output before choosing an algorithm.",
+    "sample_cue": "What inputs and outputs define this task?",
+    "banner": "Demo — sample data, nothing is saved",
+    "source_links": [
+      { "url": "https://www.youtube.com/watch?v=ZA-tUyM_y7s", "status": 200 },
+      { "url": "https://www.youtube.com/watch?v=ZA-tUyM_y7s&t=754s", "status": 200 },
+      { "url": "https://www.youtube.com/watch?v=ZA-tUyM_y7s&t=1302s", "status": 200 }
+    ]
+  },
+  "mobile_menu": {
+    "links": ["Demo", "Mark audio", "Privacy"],
+    "each_target_height": 44
+  },
+  "pwa": {
+    "service_worker_controller": true,
+    "offline_reload_kept_sample": true,
+    "offline_state": "Working offline"
+  },
+  "routes": {
+    "unknown_status": 404,
+    "unknown_heading": "This page is not here",
+    "unknown_recovery": "Use Audio Reflection Markers to save a useful audio moment.",
+    "home_focus_after_mark_audio": "page-title"
+  },
+  "privacy": {
+    "initial_requests": "same-origin GET only",
+    "console_errors_on_demo": [],
+    "axe_serious_or_critical": []
+  }
+}
