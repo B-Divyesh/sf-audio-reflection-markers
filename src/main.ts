@@ -543,7 +543,7 @@ async function resetDemoData(announce = true): Promise<void> {
 }
 
 function setDocumentRoute(): void {
-  $('.footer-meta').textContent = 'Built by Param Factory · v1.0.3';
+  $('.footer-meta').textContent = 'Built by Param Factory · v1.0.4';
   $('.listening-desk .section-index').textContent = 'Audio source';
   const markerIndex = $('.marker-ledger .section-index');
   markerIndex.childNodes[0]!.textContent = 'Saved markers / ';

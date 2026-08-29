@@ -1,4 +1,4 @@
-# Copy audit — polish 3
+# Copy audit — polish 4
 
 Word counts treat URLs, version strings, and file paths as one word. Interface labels are included even when they are not sentences. No entry exceeds 22 words or uses a banned marketing word.
 
@@ -10,7 +10,7 @@ Word counts treat URLs, version strings, and file paths as one word. Interface l
 | Mark useful moments in audio | 5 | Job headline |
 | For podcast and lecture listeners who want one short cue to revisit later. | 13 | Audience and outcome |
 | Try it with sample data | 5 | Primary action |
-| Opens a saved lecture marker and its recall cue. | 9 | Explains result |
+| Opens a saved lecture marker and its recall cue. | 9 | `demo-sample-content` |
 | No payment or account | 4 | `no-payment-or-account` |
 | Markers stay in this browser | 5 | `local-only` |
 | Works offline after your first visit | 7 | `offline-reload` |
@@ -39,7 +39,7 @@ Word counts treat URLs, version strings, and file paths as one word. Interface l
 | Manage marker data | 3 | Plain data-dialog heading |
 | Export a complete backup before clearing site data or moving devices. | 11 | `marker-export` |
 | Demo — sample data, nothing is saved | 7 | `demo-isolation` |
-| Try two saved lecture markers | 5 | Demo route headline |
+| Try two saved lecture markers | 5 | `demo-sample-content` |
 | Save one useful audio moment | 5 | How-it-works heading |
 | Set a source / Mark a moment / Review the cue | 3 / 3 / 3 | Plain workflow steps |
 | What stays private | 3 | Privacy section heading |
@@ -66,7 +66,7 @@ Word counts treat URLs, version strings, and file paths as one word. Interface l
 | Keeps markers and voice notes in this browser between visits. | 10 | `local-only`, `local-voice-note` |
 | Exports Markdown, CSV, and a complete JSON backup; imports JSON backups. | 10 | `marker-export`, `backup-import` |
 | Works offline after the first visit. | 6 | `offline-reload` |
-| It loads two saved lecture markers in a separate demo area. | 11 | `demo-isolation` |
+| It loads two saved lecture markers in a separate demo area. | 11 | `demo-sample-content`, `demo-isolation` |
 | Reset demo restores the sample. | 5 | `demo-isolation` |
 | Start for real discards demo changes. | 7 | `demo-isolation` |
 | Requires Node.js 20 or newer. | 5 | Setup requirement |

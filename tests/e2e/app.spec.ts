@@ -113,18 +113,24 @@ test('@claim:offline-reload works offline after the first visit', async ({ page,
   await expect(page.getByText('Working offline')).toBeVisible();
 });
 
-test('demo opens with a complete sample marker in the phone viewport', async ({ page }) => {
-  test.skip(page.viewportSize()?.width !== 390, 'mobile presentation assertion');
-  await page.goto('/');
-  await page.getByRole('link', { name: 'Try it with sample data' }).click();
+test('@claim:demo-sample-content demo opens with two saved lecture markers, including a recall cue', async ({ page }) => {
+  await page.goto('/demo');
+  await expect(page.getByRole('heading', { name: 'Try two saved lecture markers' })).toBeVisible();
+  const markers = page.locator('.marker-card');
+  await expect(markers).toHaveCount(2);
+  const storedMarkers = await demoRecords(page);
+  expect(storedMarkers).toHaveLength(2);
+  expect(storedMarkers.every((marker) => marker.source && (marker.source as { title?: string }).title === 'Algorithms and Computation — MIT OpenCourseWare')).toBe(true);
   const takeaway = page.getByRole('heading', { name: 'State the input and desired output before choosing an algorithm.' });
   const cue = page.getByText('What inputs and outputs define this task?');
   await expect(takeaway).toBeVisible();
   await expect(cue).toBeVisible();
-  const [takeawayBox, cueBox] = await Promise.all([takeaway.boundingBox(), cue.boundingBox()]);
-  expect(takeawayBox!.y + takeawayBox!.height).toBeLessThanOrEqual(844);
-  expect(cueBox!.y + cueBox!.height).toBeLessThanOrEqual(844);
-  await expect(page.getByRole('button', { name: 'Review' }).first()).toBeInViewport();
+  if (page.viewportSize()?.width === 390) {
+    const [takeawayBox, cueBox] = await Promise.all([takeaway.boundingBox(), cue.boundingBox()]);
+    expect(takeawayBox!.y + takeawayBox!.height).toBeLessThanOrEqual(844);
+    expect(cueBox!.y + cueBox!.height).toBeLessThanOrEqual(844);
+    await expect(page.getByRole('button', { name: 'Review' }).first()).toBeInViewport();
+  }
 });
 
 test('demo sample source links return a successful response', async ({ page, request }) => {
