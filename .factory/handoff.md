@@ -1,88 +1,60 @@
-# Polish round 2 handoff — Audio Reflection Markers
+# Review 3 handoff — Audio Reflection Markers
 
 ## Status
 
-Complete. Every finding in `.factory/review-1.md` and `.factory/review-2.md` is mapped in `.factory/polish-2.md` and has implementation plus evidence. No known product, accessibility, privacy, offline, routing, metadata, copy, mobile, or claim gap remains in scope.
+Adversarial review 3 is complete at candidate `fd58f43987694f8a458b24fbb2b00c3127b4aa2b`.
 
-Production: <https://audio-reflection-markers.sociobot.in>
+Verdict: **FAIL**. The complete report is `.factory/review-3.md`.
 
-Demo: <https://audio-reflection-markers.sociobot.in/?demo=1>
+No product code was modified. This work order changes only the review report and this handoff.
 
-Deployment: `b0f881b6-50c9-45f8-961a-036d5341b303`
+## What was reviewed
 
-## What changed
+- Cold live first read at 390 × 844 and 1440 × 900.
+- One-click demo presentation, reset, exit, real/demo IndexedDB isolation, request log, and offline reload.
+- Every sentence/copy unit on the landing/app document and README, including word counts and rewrites for each flag.
+- Every entry in `.factory/claims.json`, run through its exact command from a clean clone.
+- All earlier reviews, polish reports, verification reports, and the previous handoff.
+- Titles, h1 count, descriptions, canonical/OG/Twitter data, icons, manifest, sitemap, robots, 404, route focus, browser Back behavior, and all rendered links.
+- Live Axe scans, the factory URL verifier, reduced motion, touch sizing, visual identity, and missing-feature/AI leverage.
 
-- Made demo entry marker-first on phones. A complete timestamp, takeaway, cue, and Review action now appear above the 844px fold.
-- Fixed `/demo/` to use the `demo:` database and source key, not the real namespace.
-- Kept the persistent demo banner, reset, and real-mode exit; Start for real now clears demo data.
-- Expanded `.factory/claims.json` from 7 to 19 claims. Each has exactly one tagged test and an observable sandbox outcome.
-- Added tests for capture, fixture voice storage/playback, cue/date, reveal/result, Markdown/CSV/JSON export, valid import, typed fallback, remote-media privacy, file cleanup, microphone timing, deletion, and media boundaries.
-- Renamed `Data` to `Manage marker data`; replaced the `desk` and `ledger` labels with `Audio source` and `Saved markers`.
-- Completed SVG favicon, manifest, Apple-touch, Open Graph, and Twitter metadata on legal and 404 pages.
-- Narrowed README statements to what the suite proves and updated the verb-first 73-character catalog description.
-- Added an early demo-mode bootstrap to prevent layout shift while keeping the orbital listening-room identity intact.
+## Blocking findings
 
-## Exact verification
+- `F-3-1`: the sample lecture source and timestamp links return HTTP 404.
+- `F-3-2`: F-1-11 is reopened because all header navigation is hidden at phone width.
+- `F-3-3`: F-2-9 is reopened because published copy promises cleanup on page close while the claim/test covers reload only.
+- `F-3-4`: the 404 recovery copy still uses the unexplained “listening desk” metaphor.
 
-Verified from a fresh local clone of commit `881eb73528cf996914ab212c0778d3ee95d9ea07`:
+The report also records ten non-blocking but acceptance-relevant findings covering home focus, missing landing sections, action naming, metaphorical headings, inconsistent cue terminology, update accessibility, and touch-target sizing.
+
+## Verification performed
+
+Clean clone: `/tmp/audio-reflection-review3.jW4Mmt/repo`
 
 ```bash
 npm ci
-npm run lint
 npm test
+npm run lint
 npm run build
-# Every `test` command in .factory/claims.json, run independently
+# Each of the 19 commands in .factory/claims.json was run independently.
 npm run test:e2e
-npm run test:update
 ```
 
 Results:
 
 - Dependencies: 142 installed, 0 vulnerabilities.
-- Unit: 5 passed.
-- Claims: 19 independent commands; 38 passed executions across desktop and 390px projects.
-- Browser/integration/accessibility/privacy/offline: 57 passed, 1 intentional desktop skip for the mobile-only fold assertion, 0 failed.
-- Axe: 0 serious or critical violations at desktop and mobile widths.
-- Update lifecycle: passed after 2 service-worker requests.
-- Strict static artifact: 16 precache URLs and Azure response policies passed.
-- Main JS: 19.6 KB raw; CSS: 18.5 KB raw.
-- Lighthouse mobile demo: Performance 100, Accessibility 100, Best Practices 100, SEO 100; LCP 1.7 s, CLS 0.003, TBT 20 ms.
-- Local `verify-url.sh`: title, `lang`, one h1, main landmark, alt text, button labels, and console checks passed.
+- Unit tests: 5 passed.
+- Lint: passed.
+- Build: passed; `dist/` created; main JS 19.6 KB raw; CSS 18.5 KB raw.
+- Claim commands: 19 passed; 38 project executions passed.
+- Full Playwright suite: 57 passed, 1 intentional desktop skip, 0 failed.
+- Live Axe: zero violations on mobile home, mobile demo, and desktop home.
+- `/opt/fleet/lib/verify-url.sh`: passed with no console errors and all basic document checks satisfied.
+- Live demo request log: same-origin GETs only.
+- Live offline demo reload: passed after service-worker control.
+- Unknown route: styled HTTP 404.
+- Link crawl: all valid-route links passed except the seeded `example.com/designing-better-questions` source, which returned 404.
 
-Production was then opened in a fresh 390 × 844 Chromium profile. The live audit confirmed:
+## What remains
 
-- v1.0.2 and the marker-first sample layout;
-- the sample card and Review action above the initial fold;
-- isolated demo IndexedDB with an empty real marker store;
-- same-origin requests only and zero console/page errors;
-- Axe serious/critical = 0;
-- service-worker-controlled offline reload with sample data;
-- correct titles, canonical/share/icon metadata, and h1 focus on Privacy and Terms;
-- a styled HTTP 404 for `/does-not-exist`;
-- 200 responses for home, demo, legal routes, sitemap, robots, social card, favicon, and manifest.
-
-Evidence:
-
-- `.factory/polish-2.md`
-- `.factory/polish-2-mobile.png`
-- `.factory/polish-2-desktop.png`
-- `.factory/lighthouse-polish-2.json`
-- `.factory/verify-local/verify.json`
-- `.factory/verify-live/verify.json`
-
-## Run and deploy
-
-Use Node.js 20 or newer.
-
-```bash
-npm ci
-npm run dev
-npm run build
-npm run preview
-```
-
-The work-order static deployment uses `npm ci && npm test && npm run build` and uploads `dist/` with `/opt/fleet/lib/deploy-static.sh audio-reflection-markers dist`.
-
-## Known gaps and next steps
-
-None for the reviewed scope. Browser automation is intentionally described as Chromium-only; the README makes no unverified Firefox or Safari promise.
+Address every finding in `.factory/review-3.md`, update claims/tests where required, deploy, and rerun the entire review from a fresh context. Do not treat the passing test suite as acceptance while untested copy and dead-link findings remain.
