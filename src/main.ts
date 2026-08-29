@@ -60,8 +60,8 @@ function showToast(message: string, action?: { label: string; run: () => void })
   window.clearTimeout(toastTimer);
   toastMessage.textContent = message;
   toastAction.hidden = !action;
-  toastAction.textContent = action?.label ?? '';
-  toastAction.removeAttribute('aria-label');
+  toastAction.textContent = action?.label ?? 'Reload';
+  toastAction.setAttribute('aria-label', action?.label ?? 'Reload');
   toastAction.onclick = action ? () => { action.run(); toast.hidden = true; } : null;
   toast.hidden = false;
   toastTimer = window.setTimeout(() => { toast.hidden = true; }, action ? 7000 : 3500);
