@@ -51,7 +51,7 @@ Playwright is pinned to 1.58.2. If its browser is not already available, run `np
 
 ## Privacy and data model
 
-The app has no account or analytics. It does not upload or remotely process your media. Markers and voice notes stay in this browser. Local media files are available only until you reload or close the page. A source link is saved only as a reference. Download a JSON backup before clearing site storage or moving devices.
+The app has no account or analytics. It does not upload or remotely process your media. Markers and voice notes stay in this browser. A local media file is removed when you reload. A source link is saved only as a reference. Download a JSON backup before clearing site storage or moving devices.
 
 See [`/privacy`](https://audio-reflection-markers.sociobot.in/privacy/) and [`/terms`](https://audio-reflection-markers.sociobot.in/terms/). Artwork provenance is recorded in `.factory/design.md` and `assets/src/`.
 

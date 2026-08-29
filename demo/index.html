@@ -51,10 +51,11 @@
           <path d="M27 22h10v10h-6l-4 4Z" /></svg
         ><span>Reflection<br />Markers</span></a
       >
-      <nav class="header-nav" aria-label="Product">
+      <nav class="header-nav" id="product-nav" aria-label="Product">
         <a href="/demo/">Demo</a><a href="/#listening-desk">Mark audio</a
         ><a href="/privacy/">Privacy</a>
       </nav>
+      <button class="menu-toggle" id="menu-toggle" type="button" aria-expanded="false" aria-controls="product-nav">Menu</button>
       <div class="header-actions">
         <span class="connection" id="connection"
           ><span aria-hidden="true"></span>Offline-ready</span
@@ -240,7 +241,7 @@
                 type="button"
                 aria-pressed="false"
               >
-                Due only</button
+                Show due markers</button
               ><button class="text-button" id="export-button" type="button">
                 Export markers
               </button>
@@ -274,12 +275,35 @@
               <h3>Save your first marker</h3>
               <p>
                 Set a source, press <strong>Mark this moment</strong>, and write
-                the question you want your future self to answer.
+                one cue for your future self.
               </p>
             </div>
           </div>
         </section>
       </div>
+      <section class="product-guide" aria-labelledby="how-it-works-heading">
+        <div>
+          <p class="section-index">How it works</p>
+          <h2 id="how-it-works-heading">Save one useful audio moment</h2>
+        </div>
+        <ol>
+          <li><strong>Set a source</strong><span>Save a link as a reference or open a local file.</span></li>
+          <li><strong>Mark a moment</strong><span>Capture a timestamp, takeaway, and optional cue.</span></li>
+          <li><strong>Review the cue</strong><span>Reveal your takeaway after you try to recall it.</span></li>
+        </ol>
+      </section>
+      <section class="privacy-guide" aria-labelledby="privacy-guide-heading">
+        <div>
+          <p class="section-index">What stays private</p>
+          <h2 id="privacy-guide-heading">Privacy limits</h2>
+        </div>
+        <ul>
+          <li>Links are saved only as references.</li>
+          <li>Local media is not uploaded.</li>
+          <li>Markers and voice notes stay in this browser.</li>
+          <li>It does not transcribe or share media.</li>
+        </ul>
+      </section>
     </main>
     <footer>
       <p>Save short audio cues to revisit later.</p>
@@ -287,7 +311,7 @@
         <a href="/privacy/">Privacy</a><a href="/terms/">Terms</a
         ><a href="/demo/">Demo</a>
       </nav>
-      <p class="footer-meta">Built by Param Factory · v1.0.2</p>
+      <p class="footer-meta">Built by Param Factory · v1.0.3</p>
     </footer>
     <aside class="demo-banner" id="demo-banner" aria-label="Demo mode">
       <span><strong>Demo</strong> — sample data, nothing is saved</span>
@@ -389,7 +413,7 @@
       <div class="dialog-top">
         <div>
           <p class="section-index">Recall check</p>
-          <h2 id="review-dialog-title">Before you reveal it…</h2>
+          <h2 id="review-dialog-title">Recall the cue before seeing your takeaway</h2>
         </div>
         <button
           class="icon-button dialog-close"
@@ -408,7 +432,7 @@
       <div id="review-answer" class="review-answer" hidden>
         <p class="section-index">What you captured</p>
         <p id="review-takeaway"></p>
-        <p class="result-prompt">How did this land?</p>
+        <p class="result-prompt">What happened after this cue?</p>
         <div class="result-actions">
           <button class="button result" data-result="remembered" type="button">
             Remembered it</button
@@ -428,7 +452,7 @@
       <div class="dialog-top">
         <div>
           <p class="section-index">Local data</p>
-          <h2 id="data-dialog-title">Own your markers</h2>
+          <h2 id="data-dialog-title">Manage marker data</h2>
         </div>
         <button
           class="icon-button dialog-close"
@@ -440,7 +464,7 @@
         </button>
       </div>
       <p>
-        Everything lives in this browser. Export a complete backup before
+        Markers and voice notes stay in this browser. Export a complete backup before
         clearing site data or moving devices.
       </p>
       <div class="data-actions">
@@ -463,7 +487,6 @@
       ><button
         id="toast-action"
         type="button"
-        aria-label="Complete notification action"
         hidden
       ></button>
     </div>

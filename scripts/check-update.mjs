@@ -1,7 +1,7 @@
 import { createServer } from 'node:http';
 import { readFile, stat } from 'node:fs/promises';
 import { extname, join, resolve } from 'node:path';
-import { chromium } from '@playwright/test';
+import { chromium, expect } from '@playwright/test';
 
 const root = resolve(new URL('../dist/', import.meta.url).pathname);
 const mime = { '.css': 'text/css', '.html': 'text/html', '.js': 'text/javascript', '.png': 'image/png', '.webmanifest': 'application/manifest+json', '.webp': 'image/webp' };
@@ -36,8 +36,10 @@ try {
   await page.waitForFunction(() => Boolean(navigator.serviceWorker.controller));
   await page.evaluate(async () => (await navigator.serviceWorker.getRegistration())?.update());
   await page.locator('#toast-message').filter({ hasText: 'An app update is ready.' }).waitFor();
-  const action = await page.locator('#toast-action').textContent();
-  if (action !== 'Reload') throw new Error(`Expected a Reload update action, received ${action ?? 'nothing'}.`);
+  const action = page.locator('#toast-action');
+  const text = await action.textContent();
+  if (text !== 'Reload') throw new Error(`Expected a Reload update action, received ${text ?? 'nothing'}.`);
+  await expect(action).toHaveAccessibleName('Reload');
   console.log(`Verified live service-worker update lifecycle after ${workerRequests} worker requests.`);
 } finally {
   await browser.close();

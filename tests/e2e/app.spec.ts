@@ -109,7 +109,7 @@ test('@claim:offline-reload works offline after the first visit', async ({ page,
   await context.setOffline(true);
   await page.reload();
   await expect(page.getByRole('heading', { name: 'Try two saved lecture markers' })).toBeVisible();
-  await expect(page.getByText('Designing better questions — lecture').first()).toBeVisible();
+  await expect(page.getByText('Algorithms and Computation — MIT OpenCourseWare').first()).toBeVisible();
   await expect(page.getByText('Working offline')).toBeVisible();
 });
 
@@ -117,14 +117,72 @@ test('demo opens with a complete sample marker in the phone viewport', async ({ 
   test.skip(page.viewportSize()?.width !== 390, 'mobile presentation assertion');
   await page.goto('/');
   await page.getByRole('link', { name: 'Try it with sample data' }).click();
-  const takeaway = page.getByRole('heading', { name: 'Name the decision before collecting more options.' });
-  const cue = page.getByText('What decision is this research meant to support?');
+  const takeaway = page.getByRole('heading', { name: 'State the input and desired output before choosing an algorithm.' });
+  const cue = page.getByText('What inputs and outputs define this task?');
   await expect(takeaway).toBeVisible();
   await expect(cue).toBeVisible();
   const [takeawayBox, cueBox] = await Promise.all([takeaway.boundingBox(), cue.boundingBox()]);
   expect(takeawayBox!.y + takeawayBox!.height).toBeLessThanOrEqual(844);
   expect(cueBox!.y + cueBox!.height).toBeLessThanOrEqual(844);
   await expect(page.getByRole('button', { name: 'Review' }).first()).toBeInViewport();
+});
+
+test('demo sample source links return a successful response', async ({ page, request }) => {
+  await page.goto('/demo/');
+  const links = await page.locator('#active-link, .marker-time[href]').evaluateAll((elements) => elements.map((element) => (element as HTMLAnchorElement).href));
+  expect(links).toHaveLength(3);
+  expect(links.every((href) => href.startsWith('https://www.youtube.com/watch?v=ZA-tUyM_y7s'))).toBe(true);
+  for (const href of links) {
+    const response = await request.get(href, { maxRedirects: 5, timeout: 20_000 });
+    expect(response.ok(), `${href} must be a working sample source`).toBe(true);
+  }
+});
+
+test('mobile navigation keeps every product destination reachable', async ({ page }) => {
+  test.skip(page.viewportSize()?.width !== 390, 'mobile navigation assertion');
+  for (const route of ['/', '/demo/', '/privacy/', '/terms/', '/404.html']) {
+    await page.goto(route);
+    const menu = page.getByRole('button', { name: 'Menu' });
+    await expect(menu).toBeVisible();
+    await expect(menu).toHaveCSS('min-height', '44px');
+    await menu.click();
+    await expect(page.getByRole('navigation', { name: 'Product' }).getByRole('link', { name: 'Demo' })).toBeVisible();
+    await expect(page.getByRole('navigation', { name: 'Product' }).getByRole('link', { name: 'Mark audio' })).toBeVisible();
+    await expect(page.getByRole('navigation', { name: 'Product' }).getByRole('link', { name: 'Privacy' })).toBeVisible();
+  }
+});
+
+test('mobile visible controls meet the 44px touch-target baseline', async ({ page }) => {
+  test.skip(page.viewportSize()?.width !== 390, 'mobile target assertion');
+  await page.goto('/demo/');
+  const controls = page.locator('a, button, input:not([type="hidden"]), textarea');
+  for (const control of await controls.all()) {
+    const box = await control.boundingBox();
+    if (!box) continue;
+    const hidden = await control.evaluate((element) => {
+      const style = getComputedStyle(element);
+      return style.display === 'none' || style.visibility === 'hidden' || Number(style.opacity) === 0;
+    });
+    if (hidden) continue;
+    expect(Math.min(box.width, box.height), await control.evaluate((element) => `${element.tagName}#${element.id}.${element.className}`)).toBeGreaterThanOrEqual(44);
+  }
+});
+
+test('home navigation moves focus and announces the route on forward and back', async ({ page }) => {
+  await page.goto('/');
+  await page.evaluate(() => window.scrollTo(0, 360));
+  const scrollPosition = await page.evaluate(() => window.scrollY);
+  await page.locator('footer a[href="/privacy/"]').evaluate((link) => (link as HTMLAnchorElement).click());
+  await expect(page).toHaveURL(/\/privacy\/$/);
+  await expect(page.getByRole('heading', { level: 1 })).toBeFocused();
+  await page.goBack();
+  await expect(page).toHaveURL(/\/$/);
+  await expect(page.locator('#page-title')).toBeFocused();
+  await expect(page.locator('.route-status')).toContainText('Audio Reflection Markers opened.');
+  await expect.poll(() => page.evaluate(() => window.scrollY)).toBeGreaterThanOrEqual(scrollPosition - 4);
+  await page.goForward();
+  await expect(page).toHaveURL(/\/privacy\/$/);
+  await expect(page.getByRole('heading', { level: 1 })).toBeFocused();
 });
 
 test('@claim:demo-isolation demo data is separate and resettable', async ({ page }) => {
@@ -147,7 +205,7 @@ test('@claim:demo-isolation demo data is separate and resettable', async ({ page
   await page.goto('/?demo=1');
   await expect(page.getByLabel('Demo mode')).toContainText('Demo — sample data, nothing is saved');
   await expect(page.getByText('Real marker must stay out of demo.')).toHaveCount(0);
-  await expect(page.getByText('Name the decision before collecting more options.')).toBeVisible();
+  await expect(page.getByText('State the input and desired output before choosing an algorithm.')).toBeVisible();
   await page.getByRole('button', { name: 'Mark this moment' }).click();
   await page.getByLabel('My takeaway').fill('Temporary demo change.');
   await page.getByRole('button', { name: 'Save marker' }).click();
@@ -270,9 +328,9 @@ test('@claim:reveal-first-review hides the takeaway and records the result', asy
   const before = (await demoRecords(page)).find((record) => record.id === 'demo-lecture-bridge')!;
   await page.locator('[data-id="demo-lecture-bridge"]').getByRole('button', { name: 'Review' }).click();
   await expect(page.locator('#review-answer')).toBeHidden();
-  await expect(page.locator('#review-cue')).toHaveText('What decision is this research meant to support?');
+  await expect(page.locator('#review-cue')).toHaveText('What inputs and outputs define this task?');
   await page.getByRole('button', { name: 'Reveal my takeaway' }).click();
-  await expect(page.locator('#review-takeaway')).toHaveText('Name the decision before collecting more options.');
+  await expect(page.locator('#review-takeaway')).toHaveText('State the input and desired output before choosing an algorithm.');
   await page.getByRole('button', { name: 'Remembered it' }).click();
   const after = (await demoRecords(page)).find((record) => record.id === 'demo-lecture-bridge')!;
   expect((after.reviews as unknown[]).length).toBe((before.reviews as unknown[]).length + 1);
@@ -301,14 +359,14 @@ test('@claim:marker-export downloads complete Markdown, CSV, and JSON', async ({
   const download = await pending;
   expect(download.suggestedFilename()).toBe('reflection-markers-backup.json');
   exported.json = await readFile((await download.path())!, 'utf8');
-  expect(exported['reflection-markers.md']).toContain('Name the decision before collecting more options.');
+  expect(exported['reflection-markers.md']).toContain('State the input and desired output before choosing an algorithm.');
   expect(exported['reflection-markers.csv'].trim().split('\n')).toHaveLength(4);
   const jsonMarkers = JSON.parse(exported.json).markers as Array<Record<string, unknown>>;
   expect(jsonMarkers).toHaveLength(3);
   expect(jsonMarkers).toContainEqual(expect.objectContaining({
     id: 'demo-lecture-bridge', seconds: 754,
-    takeaway: 'Name the decision before collecting more options.',
-    cue: 'What decision is this research meant to support?', actionDate: '2026-09-03'
+    takeaway: 'State the input and desired output before choosing an algorithm.',
+    cue: 'What inputs and outputs define this task?', actionDate: '2026-09-03'
   }));
   expect(jsonMarkers.some((marker) => typeof (marker.voice as { data?: string } | undefined)?.data === 'string')).toBe(true);
 });

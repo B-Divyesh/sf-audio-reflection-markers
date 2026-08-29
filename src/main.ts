@@ -9,13 +9,13 @@ document.body.classList.toggle('demo-mode', demoMode);
 const demoMarkers: Marker[] = [
   {
     id: 'demo-lecture-bridge', createdAt: '2026-08-20T09:15:00.000Z', updatedAt: '2026-08-20T09:15:00.000Z',
-    source: { kind: 'link', title: 'Designing better questions — lecture', reference: 'https://example.com/designing-better-questions' },
-    seconds: 754, takeaway: 'Name the decision before collecting more options.', cue: 'What decision is this research meant to support?', actionDate: '2026-09-03', reviews: []
+    source: { kind: 'link', title: 'Algorithms and Computation — MIT OpenCourseWare', reference: 'https://www.youtube.com/watch?v=ZA-tUyM_y7s' },
+    seconds: 754, takeaway: 'State the input and desired output before choosing an algorithm.', cue: 'What inputs and outputs define this task?', actionDate: '2026-09-03', reviews: []
   },
   {
     id: 'demo-lecture-constraint', createdAt: '2026-08-19T16:30:00.000Z', updatedAt: '2026-08-19T16:30:00.000Z',
-    source: { kind: 'link', title: 'Designing better questions — lecture', reference: 'https://example.com/designing-better-questions' },
-    seconds: 1302, takeaway: 'A useful constraint makes the next action smaller.', cue: 'Which constraint would make this easier to start?', actionDate: '', reviews: [{ date: '2026-08-22T12:00:00.000Z', result: 'remembered' }]
+    source: { kind: 'link', title: 'Algorithms and Computation — MIT OpenCourseWare', reference: 'https://www.youtube.com/watch?v=ZA-tUyM_y7s' },
+    seconds: 1302, takeaway: 'Name the constraint before comparing possible approaches.', cue: 'Which constraint should guide the next choice?', actionDate: '', reviews: [{ date: '2026-08-22T12:00:00.000Z', result: 'remembered' }]
   }
 ];
 
@@ -61,6 +61,7 @@ function showToast(message: string, action?: { label: string; run: () => void })
   toastMessage.textContent = message;
   toastAction.hidden = !action;
   toastAction.textContent = action?.label ?? '';
+  toastAction.removeAttribute('aria-label');
   toastAction.onclick = action ? () => { action.run(); toast.hidden = true; } : null;
   toast.hidden = false;
   toastTimer = window.setTimeout(() => { toast.hidden = true; }, action ? 7000 : 3500);
@@ -203,7 +204,7 @@ function renderMarkers(): void {
       ${voice}
       <footer><button class="mini-button review" type="button" data-action="review">Review</button><div><button class="mini-button" type="button" data-action="edit">Edit</button><button class="mini-button" type="button" data-action="delete">Delete</button></div></footer>
     </article>`;
-  }).join('') : dueOnly && markers.length ? '<p class="filter-empty">Nothing is due. Your next prompt will appear here on its check date.</p>' : '';
+  }).join('') : dueOnly && markers.length ? '<p class="filter-empty">Nothing is due. Your next cue will appear here on its check date.</p>' : '';
   const reviewed = markers.filter((marker) => marker.reviews.length > 0).length;
   const percent = markers.length ? Math.round(reviewed / markers.length * 100) : 0;
   ($('#progress-wrap') as HTMLElement).hidden = markers.length === 0;
@@ -422,6 +423,17 @@ function setupPlayer(): void {
 
 function setupEvents(): void {
   setupSourceTabs(); setupPlayer();
+  const menuToggle = document.querySelector<HTMLButtonElement>('#menu-toggle');
+  const headerNav = document.querySelector<HTMLElement>('#product-nav');
+  menuToggle?.addEventListener('click', () => {
+    const open = menuToggle.getAttribute('aria-expanded') !== 'true';
+    menuToggle.setAttribute('aria-expanded', String(open));
+    headerNav?.classList.toggle('is-open', open);
+  });
+  headerNav?.addEventListener('click', () => {
+    menuToggle?.setAttribute('aria-expanded', 'false');
+    headerNav.classList.remove('is-open');
+  });
   $('#mark-button').addEventListener('click', () => openMarker());
   markerForm.addEventListener('submit', (event) => { event.preventDefault(); void saveFromForm(); });
   $('#voice-button').addEventListener('click', () => void toggleRecording());
@@ -444,7 +456,7 @@ function setupEvents(): void {
   });
   $('#reveal-button').addEventListener('click', () => { ($('#reveal-button') as HTMLButtonElement).hidden = true; ($('#review-answer') as HTMLElement).hidden = false; ($('[data-result]') as HTMLButtonElement).focus(); });
   document.querySelectorAll<HTMLButtonElement>('[data-result]').forEach((button) => button.addEventListener('click', () => void recordReview(button.dataset.result as ReviewResult)));
-  $('#filter-button').addEventListener('click', () => { dueOnly = !dueOnly; $('#filter-button').setAttribute('aria-pressed', String(dueOnly)); $('#filter-button').textContent = dueOnly ? 'Show all' : 'Due only'; renderMarkers(); });
+  $('#filter-button').addEventListener('click', () => { dueOnly = !dueOnly; $('#filter-button').setAttribute('aria-pressed', String(dueOnly)); $('#filter-button').textContent = dueOnly ? 'Show all markers' : 'Show due markers'; renderMarkers(); });
   const exportMenu = $('#export-menu') as HTMLElement;
   $('#export-button').addEventListener('click', () => {
     const button = $('#export-button').getBoundingClientRect();
@@ -531,7 +543,7 @@ async function resetDemoData(announce = true): Promise<void> {
 }
 
 function setDocumentRoute(): void {
-  $('.footer-meta').textContent = 'Built by Param Factory · v1.0.2';
+  $('.footer-meta').textContent = 'Built by Param Factory · v1.0.3';
   $('.listening-desk .section-index').textContent = 'Audio source';
   const markerIndex = $('.marker-ledger .section-index');
   markerIndex.childNodes[0]!.textContent = 'Saved markers / ';
@@ -550,19 +562,24 @@ function setDocumentRoute(): void {
   }
 }
 
+function focusRouteHeading(): void {
+  const heading = $('#page-title') as HTMLElement;
+  heading.tabIndex = -1;
+  heading.focus({ preventScroll: true });
+  $('.route-status').textContent = demoMode ? 'Demo opened.' : 'Audio Reflection Markers opened.';
+}
+
 async function start(): Promise<void> {
   setupEvents();
   setDocumentRoute();
   ($('#demo-banner') as HTMLElement).hidden = !demoMode;
   if (demoMode && !(await getMarkers()).length) await resetDemoData(false);
   restoreSource(); updateClock(); updateConnection(); setupServiceWorker(); await refresh();
-  if (demoMode) {
-    const heading = $('#page-title') as HTMLElement;
-    heading.tabIndex = -1;
-    heading.focus();
-    $('.route-status').textContent = 'Demo opened.';
-  }
+  focusRouteHeading();
 }
 
 void start();
 window.addEventListener('online', updateConnection); window.addEventListener('offline', updateConnection);
+window.addEventListener('pageshow', (event) => {
+  if (event.persisted) focusRouteHeading();
+});
