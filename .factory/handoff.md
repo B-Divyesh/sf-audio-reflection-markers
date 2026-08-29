@@ -38,6 +38,7 @@ Final build evidence:
 - `npm run lint`: passed.
 - `npm run build`: passed; 16 precache URLs and Static Web Apps policy checks passed. Main JavaScript: 20.2 KB raw. CSS: 20.8 KB raw.
 - `npm run test:update`: passed after two service-worker requests and asserted the `Reload` accessible name.
+- Live Lighthouse mobile (`?demo=1`): Performance 95, Accessibility 100, Best Practices 100, SEO 100; LCP 1.13 s, CLS 0.031, TBT 263 ms. Raw report: `.factory/lighthouse-polish-3.json`.
 - Local verifier: [verify.json](polish-3-local/verify.json) — title, lang, one h1, main, alt text, zero console errors, zero unlabeled buttons.
 - Playwright Axe: zero serious/critical findings in the final suite and the cold live check.
 - Cold live proof: [live check](polish-3-live/live-check.json), [mobile screenshot](polish-3-live/screenshot-mobile.png), and [desktop screenshot](polish-3-live/screenshot-desktop.png). It confirms 200 sample links, 44 px menu links, demo isolation presentation, controlled service worker, offline reload, styled 404, root focus after Mark audio, same-origin initial GET requests, and no demo console errors.

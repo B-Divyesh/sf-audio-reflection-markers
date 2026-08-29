@@ -65,5 +65,6 @@ Evidence abbreviations: **clean claims** means every command in `.factory/claims
 - `npm ci`, `npm test` (5 passed), `npm run lint`, and `npm run build` passed. The build verified all 16 precache URLs and deployment policies; main JavaScript is 20.2 KB raw and CSS is 20.8 KB raw.
 - All 19 claim commands were run independently in that clean clone. Each runs in desktop and 390 px projects, for 38 passing claim executions.
 - Final `npm run test:e2e` passed (66 configured project tests, with three intentional desktop skips for mobile-only assertions). `npm run test:update` passed.
+- Live Lighthouse mobile: Performance 95, Accessibility 100, Best Practices 100, SEO 100; LCP 1.13 s and CLS 0.031. Raw report: `.factory/lighthouse-polish-3.json`.
 - The local verifier reported title/lang/main/one h1/alt text/button labels and zero console errors: [local verification](polish-3-local/verify.json). Playwright Axe serious/critical findings were zero in the final suite.
 - Deployment `c4a234e5-3239-4f6a-ace4-a96df9dd4d89` was published through the static work-order deploy utility. The cold live re-check reported one h1, main, alt text, zero console errors, and zero unlabeled buttons: [live verification](polish-3-live/verify.json). The live Playwright Axe serious/critical result was zero in [live check JSON](polish-3-live/live-check.json).
